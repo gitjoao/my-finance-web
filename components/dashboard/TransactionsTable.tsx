@@ -1,3 +1,6 @@
+import Link from "next/link";
+import DeleteTransactionModal from "../transactions/DeleteTransactionModal";
+
 type Transaction = {
   id: string;
   category: string;
@@ -9,8 +12,10 @@ type Transaction = {
 
 export default function TransactionsTable({
   transactions,
+  showOptions = false,
 }: {
   transactions: Transaction[];
+  showOptions?: boolean;
 }) {
   return (
     <div className="box">
@@ -26,6 +31,7 @@ export default function TransactionsTable({
               <th>Tipo</th>
               <th>Pagamento</th>
               <th>Valor</th>
+              <th></th>
             </tr>
           </thead>
 
@@ -36,6 +42,22 @@ export default function TransactionsTable({
                 <td>{transaction.type}</td>
                 <td>{transaction.paymentMethod ?? "-"}</td>
                 <td>R$ {transaction.amount}</td>
+                <td>
+                  {showOptions && (
+                    <div
+                      className="btn-group"
+                      style={{ display: "flex", gap: "8px" }}
+                    >
+                      <Link
+                        href={`/transactions/${transaction.id}`}
+                        className="btn btn-warning btn-sm"
+                      >
+                        <i className="fa fa-pencil"></i> Editar
+                      </Link>
+                      <DeleteTransactionModal transactionId={transaction.id} />
+                    </div>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>

@@ -1,20 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import { createTransaction } from "@/services/api";
+import { createTransaction, updateTransaction } from "@/services/api";
 import { useRouter } from "next/navigation";
 
-export default function TransactionForm() {
+type TransactionFormProps = {
+  initialData?: {
+    id: string;
+    type: string;
+    amount: number;
+    category: string;
+    paymentMethod?: string;
+    owner: string;
+    description?: string;
+    date?: string;
+  };
+};
+
+export default function TransactionForm({ initialData }: TransactionFormProps) {
   const router = useRouter();
 
   const [form, setForm] = useState({
-    type: "expense",
-    amount: "",
-    category: "",
-    paymentMethod: "debit",
-    owner: "me",
-    description: "",
-    date: "",
+    type: initialData?.type ?? "expense",
+    amount: initialData?.amount ?? "",
+    category: initialData?.category ?? "",
+    paymentMethod: initialData?.paymentMethod ?? "credit",
+    owner: initialData?.owner ?? "me",
+    description: initialData?.description ?? "",
+    date: initialData?.date ? initialData.date.split("T")[0] : "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -25,10 +38,17 @@ export default function TransactionForm() {
     try {
       setLoading(true);
 
-      await createTransaction({
-        ...form,
-        amount: Number(form.amount),
-      });
+      if (initialData?.id) {
+        await updateTransaction(initialData.id, {
+          ...form,
+          amount: Number(form.amount),
+        });
+      } else {
+        await createTransaction({
+          ...form,
+          amount: Number(form.amount),
+        });
+      }
 
       router.push("/dashboard");
     } catch (error) {
@@ -52,7 +72,9 @@ export default function TransactionForm() {
     <form onSubmit={handleSubmit}>
       <div className="box box-primary">
         <div className="box-header">
-          <h3 className="box-title">Nova Transação</h3>
+          <h3 className="box-title">
+            {initialData ? "Editar" : "Criar"} Transação
+          </h3>
         </div>
 
         <div className="box-body">
@@ -152,7 +174,7 @@ export default function TransactionForm() {
 
         <div className="box-footer">
           <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? "Salvando..." : "Salvar"}
+            {loading ? "Salvando..." : initialData ? "Atualizar" : "Salvar"}
           </button>
         </div>
       </div>
