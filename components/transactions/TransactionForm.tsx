@@ -64,7 +64,7 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
         });
       }
 
-      router.push("/dashboard");
+      router.push("/transactions");
     } catch (error) {
       console.error(error);
       alert("Erro ao criar transação");
