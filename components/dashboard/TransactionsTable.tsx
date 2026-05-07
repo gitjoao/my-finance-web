@@ -1,0 +1,46 @@
+type Transaction = {
+  id: string;
+  category: string;
+  amount: number;
+  type: string;
+  paymentMethod?: string;
+  owner: string;
+};
+
+export default function TransactionsTable({
+  transactions,
+}: {
+  transactions: Transaction[];
+}) {
+  return (
+    <div className="box">
+      <div className="box-header">
+        <h3 className="box-title">Transações</h3>
+      </div>
+
+      <div className="box-body">
+        <table className="table table-bordered">
+          <thead>
+            <tr>
+              <th>Categoria</th>
+              <th>Tipo</th>
+              <th>Pagamento</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {transactions.map((transaction) => (
+              <tr key={transaction.id}>
+                <td>{transaction.category}</td>
+                <td>{transaction.type}</td>
+                <td>{transaction.paymentMethod ?? "-"}</td>
+                <td>R$ {transaction.amount}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
