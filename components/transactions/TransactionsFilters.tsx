@@ -29,6 +29,10 @@ export default function TransactionsFilters() {
 
   const [year, setYear] = useState(searchParams.get("year") || "");
 
+  const [paymentMethod, setPaymentMethod] = useState(
+    searchParams.get("paymentMethod") || "",
+  );
+
   function handleFilter() {
     const params = new URLSearchParams();
 
@@ -42,6 +46,10 @@ export default function TransactionsFilters() {
 
     if (year) {
       params.set("year", year);
+    }
+
+    if (paymentMethod) {
+      params.set("paymentMethod", paymentMethod);
     }
 
     router.push(`${pathname}?${params.toString()}`);
@@ -71,6 +79,22 @@ export default function TransactionsFilters() {
               <option value="income">Receita</option>
 
               <option value="expense">Despesa</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Método de Pagamento</label>
+
+            <select
+              className="form-control"
+              value={paymentMethod}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            >
+              <option value="">Todos</option>
+
+              <option value="debit">Débito</option>
+
+              <option value="credit">Crédito</option>
             </select>
           </div>
 

@@ -9,6 +9,7 @@ type Props = {
     type?: string;
     month?: string;
     year?: string;
+    paymentMethod?: string;
   }>;
 };
 
@@ -26,6 +27,7 @@ export default async function TransactionsPage({ searchParams }: Props) {
     type: params.type,
     month: params.month,
     year: params.year,
+    paymentMethod: params.paymentMethod,
   });
 
   return (
