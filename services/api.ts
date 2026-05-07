@@ -1,8 +1,30 @@
 const API_URL = "http://localhost:3333"
 
-export async function getAllTransactions() {
+type GetTransactionsParams = {
+	type?: string
+	month?: string
+	year?: string
+}
+
+
+export async function getTransactions(params?: GetTransactionsParams) {
+
+	const search = new URLSearchParams()
+
+	if (params?.type) {
+		search.append("type", params.type)
+	}
+
+	if (params?.month) {
+		search.append("month", params.month)
+	}
+
+	if (params?.year) {
+		search.append("year", params.year)
+	}
+
 	const response = await fetch(
-		`${API_URL}/transactions`
+		`${API_URL}/transactions?${search.toString()}`
 	)
 
 	if (!response.ok) {

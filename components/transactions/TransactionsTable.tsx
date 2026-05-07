@@ -1,5 +1,5 @@
 import Link from "next/link";
-import DeleteTransactionModal from "../transactions/DeleteTransactionModal";
+import DeleteTransactionModal from "./DeleteTransactionModal";
 import { currencyFormatter } from "@/app/utils/currency";
 import { dateFormatter } from "@/app/utils/date";
 
@@ -22,7 +22,7 @@ export default function TransactionsTable({
   showOptions?: boolean;
 }) {
   return (
-    <div className="box">
+    <div className="box box-primary">
       <div className="box-header">
         <h3 className="box-title">Transações</h3>
       </div>
@@ -48,7 +48,9 @@ export default function TransactionsTable({
                 <td>{transaction.description}</td>
                 <td>{dateFormatter.format(new Date(transaction.date))}</td>
                 <td>{transaction.type === "income" ? "Receita" : "Despesa"}</td>
-                <td>{transaction.paymentMethod ?? "-"}</td>
+                <td>
+                  {transaction.paymentMethod === "credit" ? "Cartão" : "Débito"}
+                </td>
                 <td>
                   {currencyFormatter.format(Number(transaction.amount || 0))}
                 </td>

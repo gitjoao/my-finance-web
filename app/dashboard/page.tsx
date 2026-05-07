@@ -1,6 +1,6 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import SummaryCards from "@/components/dashboard/SummaryCards";
-import TransactionsTable from "@/components/dashboard/TransactionsTable";
+import TransactionsTable from "@/components/transactions/TransactionsTable";
 import { getMonthlySummary } from "@/services/api";
 
 export default async function DashboardPage() {
@@ -8,7 +8,7 @@ export default async function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <SummaryCards summary={data.summary} />
+      <SummaryCards data={data} />
 
       <TransactionsTable transactions={data.transactions} />
     </DashboardLayout>
