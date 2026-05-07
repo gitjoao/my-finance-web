@@ -23,7 +23,7 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
 
   const [form, setForm] = useState({
     type: initialData?.type ?? "expense",
-    amount: Number(initialData?.amount) ?? 0,
+    amount: Number(initialData?.amount) ?? "",
     category: initialData?.category ?? "",
     paymentMethod: initialData?.paymentMethod ?? "credit",
     owner: initialData?.owner ?? "me",
@@ -113,7 +113,7 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
               type="text"
               name="amount"
               className="form-control"
-              value={currencyFormatter.format(Number(form.amount || 0))}
+              value={form.amount ? currencyFormatter.format(form.amount) : ""}
               onChange={handleAmountChange}
             />
           </div>
