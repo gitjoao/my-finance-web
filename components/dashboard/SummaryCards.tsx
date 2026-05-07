@@ -1,3 +1,5 @@
+import { currencyFormatter } from "@/app/utils/currency";
+
 type Props = {
   summary: {
     income: number;
@@ -13,7 +15,7 @@ export default function SummaryCards({ summary }: Props) {
       <div className="col-md-3">
         <div className="small-box bg-green">
           <div className="inner">
-            <h3>R$ {summary.income}</h3>
+            <h3>{currencyFormatter.format(Number(summary.income || 0))}</h3>
             <p>Receitas</p>
           </div>
         </div>
@@ -22,7 +24,7 @@ export default function SummaryCards({ summary }: Props) {
       <div className="col-md-3">
         <div className="small-box bg-red">
           <div className="inner">
-            <h3>R$ {summary.expense}</h3>
+            <h3>{currencyFormatter.format(Number(summary.expense || 0))}</h3>
             <p>Despesas</p>
           </div>
         </div>
@@ -31,7 +33,7 @@ export default function SummaryCards({ summary }: Props) {
       <div className="col-md-3">
         <div className="small-box bg-yellow">
           <div className="inner">
-            <h3>R$ {summary.credit}</h3>
+            <h3>{currencyFormatter.format(Number(summary.credit || 0))}</h3>
             <p>Cartão</p>
           </div>
         </div>
@@ -40,7 +42,7 @@ export default function SummaryCards({ summary }: Props) {
       <div className="col-md-3">
         <div className="small-box bg-blue">
           <div className="inner">
-            <h3>R$ {summary.balance}</h3>
+            <h3>{currencyFormatter.format(Number(summary.balance || 0))}</h3>
             <p>Saldo</p>
           </div>
         </div>

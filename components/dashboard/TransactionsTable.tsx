@@ -1,5 +1,6 @@
 import Link from "next/link";
 import DeleteTransactionModal from "../transactions/DeleteTransactionModal";
+import { currencyFormatter } from "@/app/utils/currency";
 
 type Transaction = {
   id: string;
@@ -41,7 +42,9 @@ export default function TransactionsTable({
                 <td>{transaction.category}</td>
                 <td>{transaction.type}</td>
                 <td>{transaction.paymentMethod ?? "-"}</td>
-                <td>R$ {transaction.amount}</td>
+                <td>
+                  {currencyFormatter.format(Number(transaction.amount || 0))}
+                </td>
                 <td>
                   {showOptions && (
                     <div

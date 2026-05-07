@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createTransaction, updateTransaction } from "@/services/api";
 import { useRouter } from "next/navigation";
+import { currencyFormatter } from "@/app/utils/currency";
 
 type TransactionFormProps = {
   initialData?: {
@@ -22,13 +23,26 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
 
   const [form, setForm] = useState({
     type: initialData?.type ?? "expense",
-    amount: initialData?.amount ?? "",
+    amount: Number(initialData?.amount) ?? 0,
     category: initialData?.category ?? "",
     paymentMethod: initialData?.paymentMethod ?? "credit",
     owner: initialData?.owner ?? "me",
     description: initialData?.description ?? "",
     date: initialData?.date ? initialData.date.split("T")[0] : "",
   });
+
+  function handleAmountChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value.replace(/\D/g, "");
+
+    const amount = Number(value) / 100;
+
+    setForm({
+      ...form,
+      amount,
+    });
+  }
+
+  const isEdit = !!initialData;
 
   const [loading, setLoading] = useState(false);
 
@@ -38,7 +52,7 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
     try {
       setLoading(true);
 
-      if (initialData?.id) {
+      if (isEdit) {
         await updateTransaction(initialData.id, {
           ...form,
           amount: Number(form.amount),
@@ -72,9 +86,7 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
     <form onSubmit={handleSubmit}>
       <div className="box box-primary">
         <div className="box-header">
-          <h3 className="box-title">
-            {initialData ? "Editar" : "Criar"} Transação
-          </h3>
+          <h3 className="box-title">{isEdit ? "Editar" : "Criar"} Transação</h3>
         </div>
 
         <div className="box-body">
@@ -86,6 +98,7 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
               className="form-control"
               value={form.type}
               onChange={handleChange}
+              disabled={isEdit}
             >
               <option value="income">Receita</option>
 
@@ -97,11 +110,11 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
             <label>Valor</label>
 
             <input
-              type="number"
+              type="text"
               name="amount"
               className="form-control"
-              value={form.amount}
-              onChange={handleChange}
+              value={currencyFormatter.format(Number(form.amount || 0))}
+              onChange={handleAmountChange}
             />
           </div>
 
@@ -140,6 +153,7 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
               className="form-control"
               value={form.owner}
               onChange={handleChange}
+              disabled={isEdit}
             >
               <option value="me">Eu</option>
 
@@ -174,7 +188,7 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
 
         <div className="box-footer">
           <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? "Salvando..." : initialData ? "Atualizar" : "Salvar"}
+            {loading ? "Salvando..." : isEdit ? "Atualizar" : "Salvar"}
           </button>
         </div>
       </div>
