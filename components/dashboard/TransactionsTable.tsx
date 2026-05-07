@@ -1,10 +1,13 @@
 import Link from "next/link";
 import DeleteTransactionModal from "../transactions/DeleteTransactionModal";
 import { currencyFormatter } from "@/app/utils/currency";
+import { dateFormatter } from "@/app/utils/date";
 
 type Transaction = {
   id: string;
   category: string;
+  description: string;
+  date: string;
   amount: number;
   type: string;
   paymentMethod?: string;
@@ -29,6 +32,8 @@ export default function TransactionsTable({
           <thead>
             <tr>
               <th>Categoria</th>
+              <th>Descrição</th>
+              <th>Data</th>
               <th>Tipo</th>
               <th>Pagamento</th>
               <th>Valor</th>
@@ -40,7 +45,9 @@ export default function TransactionsTable({
             {transactions.map((transaction) => (
               <tr key={transaction.id}>
                 <td>{transaction.category}</td>
-                <td>{transaction.type}</td>
+                <td>{transaction.description}</td>
+                <td>{dateFormatter.format(new Date(transaction.date))}</td>
+                <td>{transaction.type === "income" ? "Receita" : "Despesa"}</td>
                 <td>{transaction.paymentMethod ?? "-"}</td>
                 <td>
                   {currencyFormatter.format(Number(transaction.amount || 0))}
