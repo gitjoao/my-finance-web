@@ -5,6 +5,7 @@ type GetTransactionsParams = {
 	month?: string
 	year?: string
 	paymentMethod?: string
+	category?: string
 }
 
 
@@ -26,6 +27,10 @@ export async function getTransactions(params?: GetTransactionsParams) {
 
 	if (params?.paymentMethod) {
 		search.append("paymentMethod", params.paymentMethod)
+	}
+
+	if (params?.category) {
+		search.append("category", params.category)
 	}
 
 	const response = await fetch(

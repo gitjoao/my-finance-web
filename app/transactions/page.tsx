@@ -10,6 +10,7 @@ type Props = {
     month?: string;
     year?: string;
     paymentMethod?: string;
+    category?: string;
   }>;
 };
 
@@ -28,6 +29,7 @@ export default async function TransactionsPage({ searchParams }: Props) {
     month: params.month,
     year: params.year,
     paymentMethod: params.paymentMethod,
+    category: params.category,
   });
 
   return (

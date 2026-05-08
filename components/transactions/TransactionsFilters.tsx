@@ -33,6 +33,8 @@ export default function TransactionsFilters() {
     searchParams.get("paymentMethod") || "",
   );
 
+  const [category, setCategory] = useState(searchParams.get("category") || "");
+
   function handleFilter() {
     const params = new URLSearchParams();
 
@@ -50,6 +52,10 @@ export default function TransactionsFilters() {
 
     if (paymentMethod) {
       params.set("paymentMethod", paymentMethod);
+    }
+
+    if (category) {
+      params.set("category", category);
     }
 
     router.push(`${pathname}?${params.toString()}`);
@@ -80,6 +86,35 @@ export default function TransactionsFilters() {
 
               <option value="expense">Despesa</option>
             </select>
+          </div>
+
+          {/* <div>
+            <label>Categoria</label>
+
+            <select
+              className="form-control"
+              value={categories}
+              onChange={(e) => setCategories(e.target.value)}
+            >
+              <option value="">Todas</option>
+
+              {categories.map((category) => (
+                <option key={category.value} value={category.value}>
+                  {category.label}
+                </option>
+              ))}
+            </select>
+          </div> */}
+
+          <div>
+            <label>Categoria</label>
+
+            <input
+              type="text"
+              className="form-control"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            />
           </div>
 
           <div>
