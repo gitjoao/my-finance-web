@@ -41,7 +41,7 @@ export async function getTransactions(params?: GetTransactionsParams) {
 
 export async function getMonthlySummary(month: number, year: number) {
 	const response = await fetch(
-		`${API_URL}/transactions/summary?month=${month}&year=${year}`
+		`${API_URL}/dashboard/summary?month=${month}&year=${year}`
 	)
 
 	if (!response.ok) {

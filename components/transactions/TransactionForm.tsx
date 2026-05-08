@@ -18,6 +18,65 @@ type TransactionFormProps = {
   };
 };
 
+const categories = [
+  {
+    value: "housing",
+    label: "Moradia",
+  },
+  {
+    value: "utilities",
+    label: "Utilidades",
+  },
+  {
+    value: "grocery",
+    label: "Mercado",
+  },
+  {
+    value: "health",
+    label: "Saúde",
+  },
+  {
+    value: "food",
+    label: "Alimentação",
+  },
+  {
+    value: "leisure",
+    label: "Lazer",
+  },
+  {
+    value: "shopping",
+    label: "Compras",
+  },
+  {
+    value: "subscriptions",
+    label: "Assinaturas",
+  },
+  {
+    value: "education",
+    label: "Educação",
+  },
+  {
+    value: "family",
+    label: "Família",
+  },
+  {
+    value: "donations",
+    label: "Doações",
+  },
+  {
+    value: "investments",
+    label: "Investimentos",
+  },
+  {
+    value: "transport",
+    label: "Transporte",
+  },
+  {
+    value: "uncategorized",
+    label: "Sem categoria",
+  },
+];
+
 export default function TransactionForm({ initialData }: TransactionFormProps) {
   const router = useRouter();
 
@@ -121,13 +180,24 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
           <div className="form-group">
             <label>Categoria</label>
 
-            <input
-              type="text"
-              name="category"
+            <select
               className="form-control"
               value={form.category}
-              onChange={handleChange}
-            />
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  category: e.target.value,
+                })
+              }
+            >
+              <option value="">Selecione</option>
+
+              {categories.map((category) => (
+                <option key={category.value} value={category.value}>
+                  {category.label}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="form-group">

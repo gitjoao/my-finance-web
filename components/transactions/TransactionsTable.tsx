@@ -49,7 +49,9 @@ export default function TransactionsTable({
                 <td>{dateFormatter.format(new Date(transaction.date))}</td>
                 <td>{transaction.type === "income" ? "Receita" : "Despesa"}</td>
                 <td>
-                  {transaction.paymentMethod === "credit" ? "Cartão" : "Débito"}
+                  {transaction.paymentMethod === "credit"
+                    ? "Crédito"
+                    : "Débito"}
                 </td>
                 <td>
                   {currencyFormatter.format(Number(transaction.amount || 0))}
