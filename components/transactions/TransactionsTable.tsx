@@ -5,7 +5,11 @@ import { dateFormatter } from "@/app/utils/date";
 
 type Transaction = {
   id: string;
-  category: string;
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  };
   description: string;
   date: string;
   amount: number;
@@ -46,7 +50,7 @@ export default function TransactionsTable({
           <tbody>
             {transactions.map((transaction) => (
               <tr key={transaction.id}>
-                <td>{transaction.category}</td>
+                <td>{transaction.category?.name || ""}</td>
                 <td>
                   {transaction.description}{" "}
                   {transaction.installmentTotal! > 1
