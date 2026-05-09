@@ -11,6 +11,8 @@ type Transaction = {
   amount: number;
   type: string;
   paymentMethod?: string;
+  installmentTotal?: number;
+  installmentNumber?: number;
   owner: string;
 };
 
@@ -45,7 +47,12 @@ export default function TransactionsTable({
             {transactions.map((transaction) => (
               <tr key={transaction.id}>
                 <td>{transaction.category}</td>
-                <td>{transaction.description}</td>
+                <td>
+                  {transaction.description}{" "}
+                  {transaction.installmentTotal! > 1
+                    ? `(${transaction.installmentNumber}/${transaction.installmentTotal})`
+                    : ""}
+                </td>
                 <td>{dateFormatter.format(new Date(transaction.date))}</td>
                 <td>{transaction.type === "income" ? "Receita" : "Despesa"}</td>
                 <td>

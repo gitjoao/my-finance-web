@@ -12,6 +12,7 @@ type TransactionFormProps = {
     amount: number;
     category: string;
     paymentMethod?: string;
+    installmentTotal?: number;
     owner: string;
     description?: string;
     date?: string;
@@ -85,6 +86,7 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
     amount: Number(initialData?.amount) ?? "",
     category: initialData?.category ?? "",
     paymentMethod: initialData?.paymentMethod ?? "credit",
+    installmentTotal: initialData?.installmentTotal ?? 1,
     owner: initialData?.owner ?? "me",
     description: initialData?.description ?? "",
     date: initialData?.date ? initialData.date.split("T")[0] : "",
@@ -120,6 +122,7 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
         await createTransaction({
           ...form,
           amount: Number(form.amount),
+          installmentTotal: Number(form.installmentTotal),
         });
       }
 
@@ -214,6 +217,22 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
               <option value="credit">Crédito</option>
             </select>
           </div>
+
+          {form.paymentMethod === "credit" && (
+            <div className="form-group">
+              <label>Parcelas</label>
+
+              <input
+                type="number"
+                name="installmentTotal"
+                className="form-control"
+                min={1}
+                value={form.installmentTotal}
+                onChange={handleChange}
+                disabled={isEdit}
+              />
+            </div>
+          )}
 
           <div className="form-group">
             <label>Dono</label>
