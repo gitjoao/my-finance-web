@@ -76,6 +76,10 @@ const categories = [
     value: "uncategorized",
     label: "Sem categoria",
   },
+  {
+    value: "salary",
+    label: "Salário",
+  },
 ];
 
 export default function TransactionForm({ initialData }: TransactionFormProps) {
@@ -112,16 +116,20 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
 
     try {
       setLoading(true);
-
+      const amount = Number(form.amount);
+      const paymentMethod =
+        form.type === "expense" ? form.paymentMethod : undefined;
       if (isEdit) {
         await updateTransaction(initialData.id, {
           ...form,
-          amount: Number(form.amount),
+          amount,
+          paymentMethod,
         });
       } else {
         await createTransaction({
           ...form,
-          amount: Number(form.amount),
+          amount,
+          paymentMethod,
           installmentTotal: Number(form.installmentTotal),
         });
       }
@@ -202,36 +210,38 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
               ))}
             </select>
           </div>
+          {form.type === "expense" && (
+            <>
+              <div className="form-group">
+                <label>Pagamento</label>
 
-          <div className="form-group">
-            <label>Pagamento</label>
+                <select
+                  name="paymentMethod"
+                  className="form-control"
+                  value={form.paymentMethod}
+                  onChange={handleChange}
+                >
+                  <option value="debit">Débito</option>
 
-            <select
-              name="paymentMethod"
-              className="form-control"
-              value={form.paymentMethod}
-              onChange={handleChange}
-            >
-              <option value="debit">Débito</option>
+                  <option value="credit">Crédito</option>
+                </select>
+              </div>
+              {form.paymentMethod === "credit" && (
+                <div className="form-group">
+                  <label>Parcelas</label>
 
-              <option value="credit">Crédito</option>
-            </select>
-          </div>
-
-          {form.paymentMethod === "credit" && (
-            <div className="form-group">
-              <label>Parcelas</label>
-
-              <input
-                type="number"
-                name="installmentTotal"
-                className="form-control"
-                min={1}
-                value={form.installmentTotal}
-                onChange={handleChange}
-                disabled={isEdit}
-              />
-            </div>
+                  <input
+                    type="number"
+                    name="installmentTotal"
+                    className="form-control"
+                    min={1}
+                    value={form.installmentTotal}
+                    onChange={handleChange}
+                    disabled={isEdit}
+                  />
+                </div>
+              )}
+            </>
           )}
 
           <div className="form-group">
