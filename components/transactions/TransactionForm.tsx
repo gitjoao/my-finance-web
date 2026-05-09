@@ -10,7 +10,7 @@ type TransactionFormProps = {
     id: string;
     type: string;
     amount: number;
-    category: string;
+    categoryId: string;
     paymentMethod?: string;
     installmentTotal?: number;
     owner: string;
@@ -32,7 +32,7 @@ export default function TransactionForm({
   const [form, setForm] = useState({
     type: initialData?.type ?? "expense",
     amount: Number(initialData?.amount) ?? "",
-    category: initialData?.category ?? "",
+    categoryId: initialData?.categoryId ?? "",
     paymentMethod: initialData?.paymentMethod ?? "credit",
     installmentTotal: initialData?.installmentTotal ?? 1,
     owner: initialData?.owner ?? "me",
@@ -137,11 +137,11 @@ export default function TransactionForm({
 
             <select
               className="form-control"
-              value={form.category}
+              value={form.categoryId}
               onChange={(e) =>
                 setForm({
                   ...form,
-                  category: e.target.value,
+                  categoryId: e.target.value,
                 })
               }
             >
