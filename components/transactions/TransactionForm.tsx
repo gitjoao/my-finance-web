@@ -17,72 +17,16 @@ type TransactionFormProps = {
     description?: string;
     date?: string;
   };
+  categories: {
+    id: string;
+    name: string;
+  }[];
 };
 
-const categories = [
-  {
-    value: "housing",
-    label: "Moradia",
-  },
-  {
-    value: "utilities",
-    label: "Utilidades",
-  },
-  {
-    value: "grocery",
-    label: "Mercado",
-  },
-  {
-    value: "health",
-    label: "Saúde",
-  },
-  {
-    value: "food",
-    label: "Alimentação",
-  },
-  {
-    value: "leisure",
-    label: "Lazer",
-  },
-  {
-    value: "shopping",
-    label: "Compras",
-  },
-  {
-    value: "subscriptions",
-    label: "Assinaturas",
-  },
-  {
-    value: "education",
-    label: "Educação",
-  },
-  {
-    value: "family",
-    label: "Família",
-  },
-  {
-    value: "donations",
-    label: "Doações",
-  },
-  {
-    value: "investments",
-    label: "Investimentos",
-  },
-  {
-    value: "transport",
-    label: "Transporte",
-  },
-  {
-    value: "uncategorized",
-    label: "Sem categoria",
-  },
-  {
-    value: "salary",
-    label: "Salário",
-  },
-];
-
-export default function TransactionForm({ initialData }: TransactionFormProps) {
+export default function TransactionForm({
+  initialData,
+  categories,
+}: TransactionFormProps) {
   const router = useRouter();
 
   const [form, setForm] = useState({
@@ -204,8 +148,8 @@ export default function TransactionForm({ initialData }: TransactionFormProps) {
               <option value="">Selecione</option>
 
               {categories.map((category) => (
-                <option key={category.value} value={category.value}>
-                  {category.label}
+                <option key={category.id} value={category.id}>
+                  {category.name}
                 </option>
               ))}
             </select>

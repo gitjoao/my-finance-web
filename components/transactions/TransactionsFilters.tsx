@@ -18,7 +18,11 @@ const months = [
   { value: "12", label: "Dezembro" },
 ];
 
-export default function TransactionsFilters() {
+export default function TransactionsFilters({
+  categories,
+}: {
+  categories: { id: string; name: string }[];
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -33,7 +37,9 @@ export default function TransactionsFilters() {
     searchParams.get("paymentMethod") || "",
   );
 
-  const [category, setCategory] = useState(searchParams.get("category") || "");
+  const [category, setCategory] = useState(
+    searchParams.get("categoryId") || "",
+  );
 
   function handleFilter() {
     const params = new URLSearchParams();
@@ -55,7 +61,7 @@ export default function TransactionsFilters() {
     }
 
     if (category) {
-      params.set("category", category);
+      params.set("categoryId", category);
     }
 
     router.push(`${pathname}?${params.toString()}`);
@@ -88,33 +94,22 @@ export default function TransactionsFilters() {
             </select>
           </div>
 
-          {/* <div>
+          <div>
             <label>Categoria</label>
 
             <select
               className="form-control"
-              value={categories}
-              onChange={(e) => setCategories(e.target.value)}
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
             >
               <option value="">Todas</option>
 
               {categories.map((category) => (
-                <option key={category.value} value={category.value}>
-                  {category.label}
+                <option key={category.id} value={category.id}>
+                  {category.name}
                 </option>
               ))}
             </select>
-          </div> */}
-
-          <div>
-            <label>Categoria</label>
-
-            <input
-              type="text"
-              className="form-control"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            />
           </div>
 
           <div>
