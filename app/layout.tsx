@@ -1,5 +1,6 @@
 import "./globals.css";
 import Script from "next/script";
+import { ToastContainer } from "react-toastify";
 
 export default function RootLayout({
   children,
@@ -29,6 +30,7 @@ export default function RootLayout({
 
       <body className="hold-transition skin-blue sidebar-mini">
         {children}
+        <ToastContainer position="top-right" autoClose={3000} />
         <Script
           src="/admin/bower_components/jquery/dist/jquery.min.js"
           strategy="beforeInteractive"

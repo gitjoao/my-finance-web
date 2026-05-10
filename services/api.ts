@@ -16,17 +16,20 @@ export async function apiFetch(
 		},
 	)
 
+	const data = await response.json()
+
 	if (!response.ok) {
 		throw new Error(
-			`Request failed: ${response.status}`,
-		)
+			data.error ||
+			"Erro na requisição",
+		);
 	}
 
 	if (response.status === 204) {
 		return null
 	}
 
-	return response.json()
+	return data
 }
 type GetTransactionsParams = {
 	type?: string
@@ -85,8 +88,8 @@ export async function getMonthlySummary(month: number, year: number) {
 }
 
 export async function createTransaction(data: unknown) {
-	const response = await fetch(
-		`${API_URL}/transactions`,
+	const response = await apiFetch(
+		`/transactions`,
 		{
 			method: "POST",
 			headers: {

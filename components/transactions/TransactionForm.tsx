@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createTransaction, updateTransaction } from "@/services/api";
 import { useRouter } from "next/navigation";
 import { currencyFormatter } from "@/app/utils/currency";
+import { toast } from "react-toastify";
 
 type TransactionFormProps = {
   initialData?: {
@@ -77,11 +78,11 @@ export default function TransactionForm({
           installmentTotal: Number(form.installmentTotal),
         });
       }
-
+      toast.success("Transação criada com sucesso!");
       router.push("/transactions");
     } catch (error) {
       console.error(error);
-      alert("Erro ao criar transação");
+      toast.error("Erro ao criar transação");
     } finally {
       setLoading(false);
     }
