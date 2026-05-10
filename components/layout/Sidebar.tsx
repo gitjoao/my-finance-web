@@ -37,6 +37,20 @@ export default function Sidebar() {
               <span>Nova Transação</span>
             </a>
           </li>
+
+          <li className={pathname === "/categories" ? "active" : ""}>
+            <a href="/categories">
+              <i className="fa fa-list"></i>
+              <span>Categorias</span>
+            </a>
+          </li>
+
+          <li className={pathname === "/categories/new" ? "active" : ""}>
+            <a href="/categories/new">
+              <i className="fa fa-plus"></i>
+              <span>Nova Categoria</span>
+            </a>
+          </li>
         </ul>
       </section>
     </aside>

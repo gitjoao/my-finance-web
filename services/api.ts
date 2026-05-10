@@ -22,6 +22,10 @@ export async function apiFetch(
 		)
 	}
 
+	if (response.status === 204) {
+		return null
+	}
+
 	return response.json()
 }
 type GetTransactionsParams = {
