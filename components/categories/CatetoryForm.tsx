@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createCategory, updateCategory } from "@/services/categoriesService";
+import { currencyFormatter } from "@/app/utils/currency";
 
 type TransactionFormProps = {
   initialData?: {
     id: string;
     name: string;
+    limit?: number;
     slug: string;
     type: string;
   };
@@ -20,6 +22,7 @@ export default function CategoryForm({ initialData }: TransactionFormProps) {
     type: initialData?.type ?? "expense",
     name: initialData?.name ?? "",
     slug: initialData?.slug ?? "",
+    limit: initialData?.limit ?? undefined,
   });
 
   const isEdit = !!initialData;
@@ -35,9 +38,13 @@ export default function CategoryForm({ initialData }: TransactionFormProps) {
       if (isEdit) {
         await updateCategory(initialData.id, {
           ...form,
+          limit: form.limit !== undefined ? Number(form.limit) : undefined,
         });
       } else {
-        await createCategory(form.name, form.type, form.slug);
+        await createCategory({
+          ...form,
+          limit: form.limit !== undefined ? Number(form.limit) : undefined,
+        });
       }
 
       router.push("/categories");
@@ -58,6 +65,17 @@ export default function CategoryForm({ initialData }: TransactionFormProps) {
     });
   }
 
+  function handleLimitChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value.replace(/\D/g, "");
+
+    const limit = Number(value) / 100;
+
+    setForm({
+      ...form,
+      limit,
+    });
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="box box-primary">
@@ -75,6 +93,17 @@ export default function CategoryForm({ initialData }: TransactionFormProps) {
               className="form-control"
               value={form.name}
               onChange={handleChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Limite</label>
+            <input
+              type="text"
+              name="limit"
+              className="form-control"
+              value={form.limit ? currencyFormatter.format(form.limit) : ""}
+              onChange={handleLimitChange}
             />
           </div>
 

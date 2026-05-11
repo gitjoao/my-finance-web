@@ -1,5 +1,6 @@
 import Link from "next/link";
 import DeleteCategoryModal from "./DeleteCategoryModal";
+import { currencyFormatter } from "@/app/utils/currency";
 
 export default function CategoriesTable({
   categories,
@@ -7,6 +8,7 @@ export default function CategoriesTable({
   categories: {
     id: string;
     name: string;
+    limit?: number;
     slug: string;
   }[];
 }) {
@@ -21,6 +23,7 @@ export default function CategoriesTable({
           <thead>
             <tr>
               <th>Nome</th>
+              <th>Limite</th>
               <th>Slug</th>
               <th></th>
             </tr>
@@ -30,6 +33,11 @@ export default function CategoriesTable({
             {categories.map((category) => (
               <tr key={category.id}>
                 <td>{category.name}</td>
+                <td>
+                  {category.limit !== null
+                    ? currencyFormatter.format(Number(category.limit))
+                    : "-"}
+                </td>
                 <td>{category.slug}</td>
                 <td>
                   <div

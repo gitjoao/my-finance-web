@@ -15,8 +15,12 @@ export async function apiFetch(
 			},
 		},
 	)
+	const text =
+		await response.text();
 
-	const data = await response.json()
+	const data = text
+		? JSON.parse(text)
+		: null;
 
 	if (!response.ok) {
 		throw new Error(
@@ -87,24 +91,6 @@ export async function getMonthlySummary(month: number, year: number) {
 	return response.json()
 }
 
-export async function createTransaction(data: unknown) {
-	const response = await apiFetch(
-		`/transactions`,
-		{
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(data),
-		}
-	)
-
-	if (!response.ok) {
-		throw new Error("Failed to create transaction")
-	}
-
-	return response.json()
-}
 
 export async function getTransactionById(id: string) {
 	const response = await fetch(`${API_URL}/transactions/${id}`)
