@@ -39,7 +39,7 @@ export default function DeleteTransactionModal({ transactionId }: Props) {
 
       {open && (
         <div
-          className="modal fade in"
+          className="modal modal-danger fade in"
           style={{
             display: "block",
             backgroundColor: "rgba(0,0,0,0.5)",
@@ -65,14 +65,14 @@ export default function DeleteTransactionModal({ transactionId }: Props) {
 
               <div className="modal-footer">
                 <button
-                  className="btn btn-default"
+                  className="btn btn-outline"
                   onClick={() => setOpen(false)}
                 >
                   Cancelar
                 </button>
 
                 <button
-                  className="btn btn-danger"
+                  className="btn btn-outline"
                   onClick={handleDelete}
                   disabled={loading}
                 >
