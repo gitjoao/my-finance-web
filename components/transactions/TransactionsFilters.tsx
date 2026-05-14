@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const months = [
   { value: "1", label: "Janeiro" },
@@ -41,7 +41,7 @@ export default function TransactionsFilters({
     searchParams.get("categoryId") || "",
   );
 
-  function handleFilter() {
+  useEffect(() => {
     const params = new URLSearchParams();
 
     if (type) {
@@ -64,8 +64,8 @@ export default function TransactionsFilters({
       params.set("categoryId", category);
     }
 
-    router.push(`${pathname}?${params.toString()}`);
-  }
+    router.replace(`${pathname}?${params.toString()}`);
+  }, [type, month, year, paymentMethod, category, pathname, router]);
 
   return (
     <div className="box box-primary">
@@ -156,10 +156,6 @@ export default function TransactionsFilters({
               onChange={(e) => setYear(e.target.value)}
             />
           </div>
-
-          <button className="btn btn-primary" onClick={handleFilter}>
-            <i className="fa fa-search"></i> Filtrar
-          </button>
         </div>
       </div>
     </div>

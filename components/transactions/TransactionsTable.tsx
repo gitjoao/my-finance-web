@@ -42,7 +42,15 @@ export default function TransactionsTable({
               <th>Data</th>
               <th>Tipo</th>
               <th>Pagamento</th>
-              <th>Valor</th>
+              <th>
+                Valor{" "}
+                {currencyFormatter.format(
+                  transactions
+                    .filter((t) => t.type === "expense")
+                    .map((t) => t.amount)
+                    .reduce((a, b) => a + b, 0),
+                )}
+              </th>
               <th></th>
             </tr>
           </thead>

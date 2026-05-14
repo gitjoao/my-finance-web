@@ -12,6 +12,7 @@ type TransactionFormProps = {
     limit?: number;
     slug: string;
     type: string;
+    color: string;
   };
 };
 
@@ -23,6 +24,7 @@ export default function CategoryForm({ initialData }: TransactionFormProps) {
     name: initialData?.name ?? "",
     slug: initialData?.slug ?? "",
     limit: initialData?.limit ?? undefined,
+    color: initialData?.color ?? "#000000",
   });
 
   const isEdit = !!initialData;
@@ -132,6 +134,21 @@ export default function CategoryForm({ initialData }: TransactionFormProps) {
 
               <option value="expense">Despesa</option>
             </select>
+          </div>
+          <div className="form-group">
+            <label>Cor</label>
+
+            <input
+              type="color"
+              name="color"
+              className="form-control"
+              value={form.color}
+              onChange={handleChange}
+              style={{
+                height: 40,
+                padding: 5,
+              }}
+            />
           </div>
         </div>
 
