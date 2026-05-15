@@ -27,9 +27,11 @@ export default async function DashboardPage({ searchParams }: Props) {
   const month = Number(params.month);
   const year = Number(params.year);
 
-  const monthlySummary = await getMonthlySummary(month, year);
-  const budgets = await getBudgetSummary(month, year);
-  const expenseByCategory = await getExpenseCategorySummaries(month, year);
+  const [monthlySummary, budgets, expenseByCategory] = await Promise.all([
+    getMonthlySummary(month, year),
+    getBudgetSummary(month, year),
+    getExpenseCategorySummaries(month, year),
+  ]);
 
   return (
     <DashboardLayout>
