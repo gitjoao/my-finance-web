@@ -1,18 +1,9 @@
 "use client";
-
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
 
 export default function Sidebar() {
   const pathname = usePathname();
-
-  const [transactionsOpen, setTransactionsOpen] = useState(
-    pathname.startsWith("/transactions"),
-  );
-
-  const [categoriesOpen, setCategoriesOpen] = useState(
-    pathname.startsWith("/categories"),
-  );
 
   return (
     <aside className="main-sidebar">
@@ -21,95 +12,25 @@ export default function Sidebar() {
           <li className="header">MENU</li>
 
           <li className={pathname === "/dashboard" ? "active" : ""}>
-            <a href="/dashboard">
+            <Link href="/dashboard">
               <i className="fa fa-dashboard"></i>
 
               <span>Dashboard</span>
-            </a>
+            </Link>
           </li>
 
-          <li
-            className={`treeview ${transactionsOpen ? "active menu-open" : ""}`}
-          >
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-
-                setTransactionsOpen(!transactionsOpen);
-              }}
-            >
+          <li className={pathname.startsWith("/transactions") ? "active" : ""}>
+            <Link href="/transactions">
               <i className="fa fa-money"></i>
-
               <span>Transações</span>
-
-              <span className="pull-right-container">
-                <i className="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-
-            <ul
-              className="treeview-menu"
-              style={{
-                display: transactionsOpen ? "block" : "none",
-              }}
-            >
-              <li className={pathname === "/transactions" ? "active" : ""}>
-                <a href="/transactions">
-                  <i className="fa fa-table"></i>
-                  Lista
-                </a>
-              </li>
-
-              <li className={pathname === "/transactions/new" ? "active" : ""}>
-                <a href="/transactions/new">
-                  <i className="fa fa-plus"></i>
-                  Criar Transação
-                </a>
-              </li>
-            </ul>
+            </Link>
           </li>
 
-          <li
-            className={`treeview ${categoriesOpen ? "active menu-open" : ""}`}
-          >
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-
-                setCategoriesOpen(!categoriesOpen);
-              }}
-            >
-              <i className="fa fa-list"></i>
-
+          <li className={pathname.startsWith("/categories") ? "active" : ""}>
+            <Link href="/categories">
+              <i className="fa fa-tag"></i>
               <span>Categorias</span>
-
-              <span className="pull-right-container">
-                <i className="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-
-            <ul
-              className="treeview-menu"
-              style={{
-                display: categoriesOpen ? "block" : "none",
-              }}
-            >
-              <li className={pathname === "/categories" ? "active" : ""}>
-                <a href="/categories">
-                  <i className="fa fa-table"></i>
-                  Lista
-                </a>
-              </li>
-
-              <li className={pathname === "/categories/new" ? "active" : ""}>
-                <a href="/categories/new">
-                  <i className="fa fa-plus"></i>
-                  Criar Categoria
-                </a>
-              </li>
-            </ul>
+            </Link>
           </li>
         </ul>
       </section>
