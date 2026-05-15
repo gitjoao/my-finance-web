@@ -13,27 +13,17 @@ import {
 type ExpenseByCategory = {
   category: string;
   amount: number;
+  color: string;
 };
 
 type Props = {
   data: ExpenseByCategory[];
 };
 
-const COLORS = [
-  "#00c0ef",
-  "#00a65a",
-  "#f39c12",
-  "#dd4b39",
-  "#605ca8",
-  "#39cccc",
-  "#ff851b",
-  "#d81b60",
-];
-
 export default function ExpensesDonutChart({ data }: Props) {
   return (
     <div className="col-md-6">
-      <div className="box box-solid">
+      <div className="box box-primary">
         <div className="box-header with-border">
           <h3 className="box-title">Gastos por Categoria</h3>
         </div>
@@ -52,8 +42,8 @@ export default function ExpensesDonutChart({ data }: Props) {
                 paddingAngle={2}
                 label={({ percent }) => `${(percent! * 100).toFixed(0)}%`}
               >
-                {data.map((_, index) => (
-                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                {data.map((category) => (
+                  <Cell key={category.category} fill={category.color} />
                 ))}
               </Pie>
 

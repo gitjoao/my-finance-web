@@ -62,7 +62,7 @@ export default function SummaryCards({ data }: Props) {
       </div>
 
       <div className="col-md-3">
-        <div className="small-box bg-blue">
+        <div className="small-box bg-green">
           <div className="inner">
             <h3>
               {currencyFormatter.format(Number(data.summary.balance || 0))}

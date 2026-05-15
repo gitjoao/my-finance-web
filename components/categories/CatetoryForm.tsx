@@ -10,7 +10,6 @@ type TransactionFormProps = {
     id: string;
     name: string;
     limit?: number;
-    slug: string;
     type: string;
     color: string;
   };
@@ -22,9 +21,8 @@ export default function CategoryForm({ initialData }: TransactionFormProps) {
   const [form, setForm] = useState({
     type: initialData?.type ?? "expense",
     name: initialData?.name ?? "",
-    slug: initialData?.slug ?? "",
     limit: initialData?.limit ?? undefined,
-    color: initialData?.color ?? "#000000",
+    color: initialData?.color ?? "",
   });
 
   const isEdit = !!initialData;
@@ -109,17 +107,6 @@ export default function CategoryForm({ initialData }: TransactionFormProps) {
             />
           </div>
 
-          <div className="form-group">
-            <label>Slug</label>
-
-            <input
-              type="text"
-              name="slug"
-              className="form-control"
-              value={form.slug}
-              onChange={handleChange}
-            />
-          </div>
           <div className="form-group">
             <label>Tipo</label>
 

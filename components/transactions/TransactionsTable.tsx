@@ -8,7 +8,7 @@ type Transaction = {
   category: {
     id: string;
     name: string;
-    slug: string;
+    color: string;
   };
   description: string;
   date: string;
@@ -58,7 +58,20 @@ export default function TransactionsTable({
           <tbody>
             {transactions.map((transaction) => (
               <tr key={transaction.id}>
-                <td>{transaction.category?.name || ""}</td>
+                <td>
+                  <div
+                    style={{
+                      backgroundColor: transaction.category?.color,
+                      color: "#fff",
+                      padding: "4px 8px",
+                      borderRadius: 20,
+                      display: "inline-block",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {transaction.category?.name || ""}
+                  </div>
+                </td>
                 <td>
                   {transaction.description}{" "}
                   {transaction.installmentTotal! > 1

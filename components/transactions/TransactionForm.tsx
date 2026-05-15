@@ -79,8 +79,10 @@ export default function TransactionForm({
           installmentTotal: Number(form.installmentTotal),
         });
       }
-      toast.success("Transação criada com sucesso!");
-      router.push("/transactions");
+      toast.success(
+        `Transação ${isEdit ? "atualizada" : "criada"} com sucesso!`,
+      );
+      router.back();
     } catch (error) {
       console.error(error);
       toast.error("Erro ao criar transação");

@@ -9,7 +9,7 @@ export default function CategoriesTable({
     id: string;
     name: string;
     limit?: number;
-    slug: string;
+    color: string;
   }[];
 }) {
   return (
@@ -24,7 +24,6 @@ export default function CategoriesTable({
             <tr>
               <th>Nome</th>
               <th>Limite</th>
-              <th>Slug</th>
               <th></th>
             </tr>
           </thead>
@@ -32,13 +31,20 @@ export default function CategoriesTable({
           <tbody>
             {categories.map((category) => (
               <tr key={category.id}>
-                <td>{category.name}</td>
+                <td
+                  style={{
+                    backgroundColor: category.color,
+                    color: "#fff",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {category.name}
+                </td>
                 <td>
                   {category.limit !== null
                     ? currencyFormatter.format(Number(category.limit))
                     : "-"}
                 </td>
-                <td>{category.slug}</td>
                 <td>
                   <div
                     className="btn-group"

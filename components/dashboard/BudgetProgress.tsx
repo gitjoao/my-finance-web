@@ -26,7 +26,7 @@ function getProgressColor(percentage: number) {
 export default function BudgetProgress({ budgets }: BudgetProgressProps) {
   return (
     <div className="col-md-6">
-      <div className="box box-solid">
+      <div className="box box-primary">
         <div className="box-header with-border">
           <h3 className="box-title">Limite por Categoria</h3>
         </div>

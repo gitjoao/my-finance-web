@@ -18,35 +18,16 @@ const months = [
   { value: "12", label: "Dezembro" },
 ];
 
-export default function TransactionsFilters({
-  categories,
-}: {
-  categories: { id: string; name: string }[];
-}) {
+export default function DashboardFilters() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [type, setType] = useState(searchParams.get("type") || "");
-
   const [month, setMonth] = useState(searchParams.get("month") || "");
-
   const [year, setYear] = useState(searchParams.get("year") || "");
-
-  const [paymentMethod, setPaymentMethod] = useState(
-    searchParams.get("paymentMethod") || "",
-  );
-
-  const [category, setCategory] = useState(
-    searchParams.get("categoryId") || "",
-  );
 
   useEffect(() => {
     const params = new URLSearchParams();
-
-    if (type) {
-      params.set("type", type);
-    }
 
     if (month) {
       params.set("month", month);
@@ -56,16 +37,8 @@ export default function TransactionsFilters({
       params.set("year", year);
     }
 
-    if (paymentMethod) {
-      params.set("paymentMethod", paymentMethod);
-    }
-
-    if (category) {
-      params.set("categoryId", category);
-    }
-
     router.replace(`${pathname}?${params.toString()}`);
-  }, [type, month, year, paymentMethod, category, pathname, router]);
+  }, [month, year, pathname, router]);
 
   return (
     <div className="box box-primary">
@@ -78,56 +51,6 @@ export default function TransactionsFilters({
             justifyContent: "center",
           }}
         >
-          <div>
-            <label>Tipo</label>
-
-            <select
-              className="form-control"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-            >
-              <option value="">Todos</option>
-
-              <option value="income">Receita</option>
-
-              <option value="expense">Despesa</option>
-            </select>
-          </div>
-
-          <div>
-            <label>Categoria</label>
-
-            <select
-              className="form-control"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              <option value="">Todas</option>
-
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label>Método de Pagamento</label>
-
-            <select
-              className="form-control"
-              value={paymentMethod}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            >
-              <option value="">Todos</option>
-
-              <option value="debit">Débito</option>
-
-              <option value="credit">Crédito</option>
-            </select>
-          </div>
-
           <div>
             <label>Mês</label>
 
