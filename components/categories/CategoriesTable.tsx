@@ -22,7 +22,7 @@ export default function CategoriesTable({
           <h3 className="box-title">Categorias</h3>
         </div>
 
-        <div className="box-body">
+        <div className="box-body table-responsive no-padding">
           <table className="table table-bordered">
             <thead>
               <tr>

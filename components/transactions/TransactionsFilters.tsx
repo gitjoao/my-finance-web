@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 
 const months = [
   { value: "1", label: "Janeiro" },
@@ -26,6 +26,8 @@ export default function TransactionsFilters({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const [isPending, startTransition] = useTransition();
 
   const [type, setType] = useState(searchParams.get("type") || "");
 
@@ -64,7 +66,9 @@ export default function TransactionsFilters({
       params.set("categoryId", category);
     }
 
-    router.replace(`${pathname}?${params.toString()}`);
+    startTransition(() => {
+      router.replace(`${pathname}?${params.toString()}`);
+    });
   }, [type, month, year, paymentMethod, category, pathname, router]);
 
   return (
@@ -156,6 +160,28 @@ export default function TransactionsFilters({
           </div>
         </div>
       </div>
+      {isPending && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "rgba(255,255,255,0.7)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 10,
+          }}
+        >
+          <div
+            style={{
+              fontSize: 18,
+              color: "#3c8dbc",
+            }}
+          >
+            <i className="fa fa-refresh fa-spin" />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

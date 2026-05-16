@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 
 const months = [
   { value: "1", label: "Janeiro" },
@@ -22,6 +22,7 @@ export default function DashboardFilters() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   const [month, setMonth] = useState(searchParams.get("month") || "");
   const [year, setYear] = useState(searchParams.get("year") || "");
@@ -37,7 +38,9 @@ export default function DashboardFilters() {
       params.set("year", year);
     }
 
-    router.replace(`${pathname}?${params.toString()}`);
+    startTransition(() => {
+      router.replace(`${pathname}?${params.toString()}`);
+    });
   }, [month, year, pathname, router]);
 
   return (
@@ -79,6 +82,28 @@ export default function DashboardFilters() {
           </div>
         </div>
       </div>
+      {isPending && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "rgba(255,255,255,0.7)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 10,
+          }}
+        >
+          <div
+            style={{
+              fontSize: 18,
+              color: "#3c8dbc",
+            }}
+          >
+            <i className="fa fa-refresh fa-spin" />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
