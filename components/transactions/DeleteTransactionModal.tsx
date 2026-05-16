@@ -3,6 +3,7 @@
 import { deleteTransaction } from "@/services/api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 type Props = {
   transactionId: string;
@@ -24,8 +25,7 @@ export default function DeleteTransactionModal({ transactionId }: Props) {
 
       router.refresh();
     } catch (error) {
-      console.error(error);
-      alert("Erro ao excluir");
+      toast.error(error instanceof Error ? error.message : "Erro ao excluir");
     } finally {
       setLoading(false);
     }

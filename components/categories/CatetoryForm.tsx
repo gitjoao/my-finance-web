@@ -43,7 +43,6 @@ export default function CategoryForm({ initialData }: TransactionFormProps) {
           limit: form.limit !== undefined ? Number(form.limit) : undefined,
         });
       } else {
-        console.log(form);
         await createCategory({
           ...form,
           limit: form.limit !== undefined ? Number(form.limit) : undefined,
@@ -81,7 +80,6 @@ export default function CategoryForm({ initialData }: TransactionFormProps) {
     const value = e.target.value.replace(/\D/g, "");
 
     const limit = Number(value) / 100;
-    console.log(value, limit);
     setForm({
       ...form,
       limit,
