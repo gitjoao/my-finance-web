@@ -12,14 +12,14 @@ export async function getCategoryById(id: string) {
 	return apiFetch(`/categories/${id}`)
 }
 
-export async function createCategory(data: { name: string, type: string, color: string, limit?: number }) {
+export async function createCategory(data: unknown) {
 	return apiFetch("/categories", {
 		method: "POST",
 		body: JSON.stringify(data),
 	})
 }
 
-export async function updateCategory(id: string, data: { name: string; type: string; color: string; limit?: number }) {
+export async function updateCategory(id: string, data: unknown) {
 	return apiFetch(`/categories/${id}`, {
 		method: "PUT",
 		body: JSON.stringify(data),

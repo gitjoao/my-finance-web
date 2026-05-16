@@ -1,3 +1,5 @@
+import { ApiError } from "./errors";
+
 const API_URL = "http://localhost:3333"
 
 export async function apiFetch(
@@ -23,10 +25,7 @@ export async function apiFetch(
 		: null;
 
 	if (!response.ok) {
-		throw new Error(
-			data.error ||
-			"Erro na requisição",
-		);
+		throw new ApiError(data?.error || "Erro na requisição", response.status, data?.details);
 	}
 
 	if (response.status === 204) {

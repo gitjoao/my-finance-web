@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createCategory, updateCategory } from "@/services/categoriesService";
 import { currencyFormatter } from "@/app/utils/currency";
+import { ApiError } from "@/services/errors";
+import { toast } from "react-toastify";
 
 type TransactionFormProps = {
   initialData?: {
@@ -20,9 +22,9 @@ export default function CategoryForm({ initialData }: TransactionFormProps) {
 
   const [form, setForm] = useState({
     type: initialData?.type ?? "expense",
-    name: initialData?.name ?? "",
+    name: initialData?.name,
     limit: initialData?.limit ?? undefined,
-    color: initialData?.color ?? "",
+    color: initialData?.color,
   });
 
   const isEdit = !!initialData;
@@ -41,16 +43,26 @@ export default function CategoryForm({ initialData }: TransactionFormProps) {
           limit: form.limit !== undefined ? Number(form.limit) : undefined,
         });
       } else {
+        console.log(form);
         await createCategory({
           ...form,
           limit: form.limit !== undefined ? Number(form.limit) : undefined,
         });
       }
-
+      toast.success(
+        `Categoria ${isEdit ? "atualizada" : "criada"} com sucesso!`,
+      );
       router.push("/categories");
     } catch (error) {
-      console.error(error);
-      alert("Erro ao criar categoria");
+      if (error instanceof ApiError) {
+        if (Array.isArray(error.details)) {
+          error.details.forEach((item: { message: string }) => {
+            toast.error(item.message, { autoClose: 5000 });
+          });
+        } else {
+          toast.error(error.message);
+        }
+      }
     } finally {
       setLoading(false);
     }
@@ -69,7 +81,7 @@ export default function CategoryForm({ initialData }: TransactionFormProps) {
     const value = e.target.value.replace(/\D/g, "");
 
     const limit = Number(value) / 100;
-
+    console.log(value, limit);
     setForm({
       ...form,
       limit,
@@ -102,7 +114,9 @@ export default function CategoryForm({ initialData }: TransactionFormProps) {
               type="text"
               name="limit"
               className="form-control"
-              value={form.limit ? currencyFormatter.format(form.limit) : ""}
+              value={
+                form.limit ? currencyFormatter.format(form.limit) : undefined
+              }
               onChange={handleLimitChange}
             />
           </div>

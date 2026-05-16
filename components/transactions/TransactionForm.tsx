@@ -6,6 +6,7 @@ import { createTransaction } from "@/services/transactionsService";
 import { useRouter } from "next/navigation";
 import { currencyFormatter } from "@/app/utils/currency";
 import { toast } from "react-toastify";
+import { ApiError } from "@/services/errors";
 
 type TransactionFormProps = {
   initialData?: {
@@ -84,8 +85,15 @@ export default function TransactionForm({
       );
       router.back();
     } catch (error) {
-      console.error(error);
-      toast.error("Erro ao criar transação");
+      if (error instanceof ApiError) {
+        if (Array.isArray(error.details)) {
+          error.details.forEach((item: { message: string }) => {
+            toast.error(item.message, { autoClose: 5000 });
+          });
+        } else {
+          toast.error(error.message);
+        }
+      }
     } finally {
       setLoading(false);
     }
