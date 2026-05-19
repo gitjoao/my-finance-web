@@ -182,21 +182,19 @@ export default function TransactionForm({
                   <option value="credit">Crédito</option>
                 </select>
               </div>
-              {form.paymentMethod === "credit" && (
-                <div className="form-group">
-                  <label>Parcelas</label>
+              <div className="form-group">
+                <label>Parcelas</label>
 
-                  <input
-                    type="number"
-                    name="installmentTotal"
-                    className="form-control"
-                    min={1}
-                    value={form.installmentTotal}
-                    onChange={handleChange}
-                    disabled={isEdit}
-                  />
-                </div>
-              )}
+                <input
+                  type="number"
+                  name="installmentTotal"
+                  className="form-control"
+                  min={1}
+                  value={form.installmentTotal}
+                  onChange={handleChange}
+                  disabled={isEdit}
+                />
+              </div>
             </>
           )}
 
