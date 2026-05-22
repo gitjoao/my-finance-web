@@ -25,15 +25,17 @@ export default async function TransactionsPage({ searchParams }: Props) {
 
     redirect(`/transactions?month=${currentMonth}&year=${currentYear}`);
   }
-  const categories = await getCategories();
 
-  const transactions = await getTransactions({
-    type: params.type,
-    month: params.month,
-    year: params.year,
-    paymentMethod: params.paymentMethod,
-    categoryId: params.categoryId,
-  });
+  const [categories, transactions] = await Promise.all([
+    getCategories(),
+    getTransactions({
+      type: params.type,
+      month: params.month,
+      year: params.year,
+      paymentMethod: params.paymentMethod,
+      categoryId: params.categoryId,
+    }),
+  ]);
 
   return (
     <DashboardLayout>

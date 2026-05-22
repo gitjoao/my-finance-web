@@ -4,7 +4,8 @@ import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
   const pathname = usePathname();
-
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1;
   return (
     <aside className="main-sidebar">
       <section className="sidebar">
@@ -12,7 +13,7 @@ export default function Sidebar() {
           <li className="header">MENU</li>
 
           <li className={pathname === "/dashboard" ? "active" : ""}>
-            <Link href="/dashboard">
+            <Link href={`/dashboard?month=${currentMonth}&year=${currentYear}`}>
               <i className="fa fa-dashboard"></i>
 
               <span>Dashboard</span>
@@ -20,7 +21,9 @@ export default function Sidebar() {
           </li>
 
           <li className={pathname.startsWith("/transactions") ? "active" : ""}>
-            <Link href="/transactions">
+            <Link
+              href={`/transactions?month=${currentMonth}&year=${currentYear}`}
+            >
               <i className="fa fa-money"></i>
               <span>Transações</span>
             </Link>

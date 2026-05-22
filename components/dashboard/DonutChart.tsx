@@ -29,7 +29,7 @@ export default function ExpensesDonutChart({ data }: Props) {
         </div>
 
         <div className="box-body">
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={400}>
             <PieChart>
               <Pie
                 data={data}

@@ -5,9 +5,14 @@ type Props = {
 };
 
 export default function Topbar({ sidebarOpen, setSidebarOpen }: Props) {
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1;
   return (
     <header className="main-header">
-      <a href="/dashboard" className="logo">
+      <a
+        href={`/dashboard?month=${currentMonth}&year=${currentYear}`}
+        className="logo"
+      >
         <span className="logo-lg">
           <b>My</b>Finance
         </span>
