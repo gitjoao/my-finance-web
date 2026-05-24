@@ -22,7 +22,7 @@ export default function CategoryForm({ initialData }: TransactionFormProps) {
 
   const [form, setForm] = useState({
     type: initialData?.type ?? "expense",
-    name: initialData?.name,
+    name: initialData?.name ?? "",
     limit: initialData?.limit ?? undefined,
     color: initialData?.color,
   });

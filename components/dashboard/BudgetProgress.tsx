@@ -49,7 +49,9 @@ export default function BudgetProgress({ budgets }: BudgetProgressProps) {
                     marginBottom: 5,
                   }}
                 >
-                  <strong>{budget.category}</strong>
+                  <strong>
+                    {budget.category} - {currencyFormatter.format(budget.limit)}
+                  </strong>
 
                   <span>
                     Disponível: {currencyFormatter.format(budget.available)}
