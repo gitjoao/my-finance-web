@@ -60,60 +60,70 @@ export default function TransactionsTable({
             </thead>
 
             <tbody>
-              {transactions.map((transaction) => (
-                <tr key={transaction.id}>
-                  <td>
-                    <div
-                      style={{
-                        backgroundColor: transaction.category?.color,
-                        color: "#fff",
-                        padding: "4px 8px",
-                        borderRadius: 20,
-                        display: "inline-block",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {transaction.category?.name || ""}
-                    </div>
-                  </td>
-                  <td>
-                    {transaction.description}{" "}
-                    {transaction.installmentTotal! > 1
-                      ? `(${transaction.installmentNumber}/${transaction.installmentTotal})`
-                      : ""}
-                  </td>
-                  <td>{dateFormatter.format(new Date(transaction.date))}</td>
-                  <td>
-                    {transaction.type === "income" ? "Receita" : "Despesa"}
-                  </td>
-                  <td>
-                    {transaction.paymentMethod === "credit"
-                      ? "Crédito"
-                      : "Débito"}
-                  </td>
-                  <td>
-                    {currencyFormatter.format(Number(transaction.amount || 0))}
-                  </td>
-                  <td>
-                    {showOptions && (
-                      <div
-                        className="btn-group"
-                        style={{ display: "flex", gap: "8px" }}
-                      >
-                        <Link
-                          href={`/transactions/${transaction.id}`}
-                          className="btn btn-warning btn-sm"
-                        >
-                          <i className="fa fa-pencil"></i> Editar
-                        </Link>
-                        <DeleteTransactionModal
-                          transactionId={transaction.id}
-                        />
-                      </div>
-                    )}
+              {transactions.length === 0 ? (
+                <tr>
+                  <td colSpan={7} style={{ textAlign: "center" }}>
+                    Nenhuma transação encontrada.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                transactions.map((transaction) => (
+                  <tr key={transaction.id}>
+                    <td>
+                      <div
+                        style={{
+                          backgroundColor: transaction.category?.color,
+                          color: "#fff",
+                          padding: "4px 8px",
+                          borderRadius: 20,
+                          display: "inline-block",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {transaction.category?.name || ""}
+                      </div>
+                    </td>
+                    <td>
+                      {transaction.description}{" "}
+                      {transaction.installmentTotal! > 1
+                        ? `(${transaction.installmentNumber}/${transaction.installmentTotal})`
+                        : ""}
+                    </td>
+                    <td>{dateFormatter.format(new Date(transaction.date))}</td>
+                    <td>
+                      {transaction.type === "income" ? "Receita" : "Despesa"}
+                    </td>
+                    <td>
+                      {transaction.paymentMethod === "credit"
+                        ? "Crédito"
+                        : "Débito"}
+                    </td>
+                    <td>
+                      {currencyFormatter.format(
+                        Number(transaction.amount || 0),
+                      )}
+                    </td>
+                    <td>
+                      {showOptions && (
+                        <div
+                          className="btn-group"
+                          style={{ display: "flex", gap: "8px" }}
+                        >
+                          <Link
+                            href={`/transactions/${transaction.id}`}
+                            className="btn btn-warning btn-sm"
+                          >
+                            <i className="fa fa-pencil"></i> Editar
+                          </Link>
+                          <DeleteTransactionModal
+                            transactionId={transaction.id}
+                          />
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
