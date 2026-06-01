@@ -40,7 +40,12 @@ export default async function TransactionsPage({ searchParams }: Props) {
   return (
     <DashboardLayout>
       <TransactionsFilters categories={categories} />
-      <TransactionsTable transactions={transactions} showOptions={true} />
+      <TransactionsTable
+        transactions={transactions}
+        showOptions={true}
+        month={Number(params.month)}
+        year={Number(params.year)}
+      />
     </DashboardLayout>
   );
 }

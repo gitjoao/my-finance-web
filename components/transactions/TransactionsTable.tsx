@@ -1,7 +1,26 @@
+"use client";
 import Link from "next/link";
 import DeleteTransactionModal from "./DeleteTransactionModal";
 import { currencyFormatter } from "@/app/utils/currency";
 import { dateFormatter } from "@/app/utils/date";
+import PaidCheckbox from "./PaidCheckbox";
+import PayBillModal from "./PayCreditCardModal";
+import { useState } from "react";
+
+const months = [
+  { value: "1", label: "Janeiro" },
+  { value: "2", label: "Fevereiro" },
+  { value: "3", label: "Março" },
+  { value: "4", label: "Abril" },
+  { value: "5", label: "Maio" },
+  { value: "6", label: "Junho" },
+  { value: "7", label: "Julho" },
+  { value: "8", label: "Agosto" },
+  { value: "9", label: "Setembro" },
+  { value: "10", label: "Outubro" },
+  { value: "11", label: "Novembro" },
+  { value: "12", label: "Dezembro" },
+];
 
 type Transaction = {
   id: string;
@@ -12,6 +31,7 @@ type Transaction = {
   };
   description: string;
   date: string;
+  paid: boolean;
   amount: number;
   type: string;
   paymentMethod?: string;
@@ -23,15 +43,41 @@ type Transaction = {
 export default function TransactionsTable({
   transactions,
   showOptions = false,
+  month,
+  year,
 }: {
   transactions: Transaction[];
   showOptions?: boolean;
+  month: number;
+  year: number;
 }) {
+  const [showModal, setShowModal] = useState(false);
   return (
     <div>
-      <Link href={`/transactions/new`} className="btn btn-success">
-        <i className="fa fa-plus"></i> Adicionar
-      </Link>
+      <div
+        style={{
+          display: "flex",
+          gap: "10px",
+          marginBottom: "15px",
+        }}
+      >
+        {" "}
+        <Link href={`/transactions/new`} className="btn btn-success">
+          <i className="fa fa-plus"></i> Adicionar
+        </Link>
+        <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+          <i className="fa fa-credit-card"></i> Pagar Fatura (
+          {months[month - 1].label || month}/{year})
+        </button>
+        {showModal && (
+          <PayBillModal
+            month={month}
+            year={year}
+            onClose={() => setShowModal(false)}
+          />
+        )}
+      </div>
+
       <div className="box box-primary" style={{ marginTop: "20px" }}>
         <div className="box-header">
           <h3 className="box-title">Transações</h3>
@@ -55,6 +101,7 @@ export default function TransactionsTable({
                       .reduce((a, b) => a + b, 0),
                   )}
                 </th>
+                <th>Pago?</th>
                 <th></th>
               </tr>
             </thead>
@@ -102,6 +149,12 @@ export default function TransactionsTable({
                       {currencyFormatter.format(
                         Number(transaction.amount || 0),
                       )}
+                    </td>
+                    <td>
+                      <PaidCheckbox
+                        id={transaction.id}
+                        paid={transaction.paid}
+                      />
                     </td>
                     <td>
                       {showOptions && (

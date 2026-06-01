@@ -13,3 +13,13 @@ export async function createTransaction(data: unknown) {
     )
 
 }
+
+export async function payCreditCardBill(month: number, year: number) {
+    return await apiFetch(
+        `/transactions/pay-credit-card-bill`,
+        {
+            method: "POST",
+            body: JSON.stringify({ month, year }),
+        }
+    )
+}
