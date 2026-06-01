@@ -150,7 +150,7 @@ export default function TransactionsTable({
                         Number(transaction.amount || 0),
                       )}
                     </td>
-                    <td>
+                    <td style={{ textAlign: "center" }}>
                       <PaidCheckbox
                         id={transaction.id}
                         paid={transaction.paid}
