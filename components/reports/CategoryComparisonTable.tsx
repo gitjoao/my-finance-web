@@ -66,7 +66,7 @@ export default function CategoryComparationTable({
                       <div>{currencyFormatter.format(current)}</div>
 
                       {variation !== null && (
-                        <small
+                        <strong
                           style={{
                             color:
                               variation > 0
@@ -77,8 +77,8 @@ export default function CategoryComparationTable({
                           }}
                         >
                           {variation > 0 ? "↑" : variation < 0 ? "↓" : "="}{" "}
-                          {Math.abs(variation).toFixed(1)}%
-                        </small>
+                          {Math.abs(variation).toFixed(0)}%
+                        </strong>
                       )}
                     </td>
                   );
