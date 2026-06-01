@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
 
 const months = [
   { value: "1", label: "Janeiro" },
@@ -22,26 +21,21 @@ export default function DashboardFilters() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
 
-  const [month, setMonth] = useState(searchParams.get("month") || "");
-  const [year, setYear] = useState(searchParams.get("year") || "");
+  const month = searchParams.get("month") || "";
+  const year = searchParams.get("year") || "";
 
-  useEffect(() => {
-    const params = new URLSearchParams();
+  function updateFilters(key: string, value: string) {
+    const params = new URLSearchParams(searchParams.toString());
 
-    if (month) {
-      params.set("month", month);
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
     }
 
-    if (year) {
-      params.set("year", year);
-    }
-
-    startTransition(() => {
-      router.replace(`${pathname}?${params.toString()}`);
-    });
-  }, [month, year, pathname, router]);
+    router.replace(`${pathname}?${params.toString()}`);
+  }
 
   return (
     <div className="box box-primary">
@@ -60,7 +54,7 @@ export default function DashboardFilters() {
             <select
               className="form-control"
               value={month}
-              onChange={(e) => setMonth(e.target.value)}
+              onChange={(e) => updateFilters("month", e.target.value)}
             >
               {months.map((month) => (
                 <option key={month.value} value={month.value}>
@@ -77,33 +71,11 @@ export default function DashboardFilters() {
               type="number"
               className="form-control"
               value={year}
-              onChange={(e) => setYear(e.target.value)}
+              onChange={(e) => updateFilters("year", e.target.value)}
             />
           </div>
         </div>
       </div>
-      {isPending && (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(255,255,255,0.7)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 10,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 18,
-              color: "#3c8dbc",
-            }}
-          >
-            <i className="fa fa-refresh fa-spin" />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
