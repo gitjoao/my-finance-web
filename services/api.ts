@@ -40,6 +40,7 @@ type GetTransactionsParams = {
 	year?: string
 	paymentMethod?: string
 	categoryId?: string
+	paid?: string
 }
 
 
@@ -65,6 +66,10 @@ export async function getTransactions(params?: GetTransactionsParams) {
 
 	if (params?.categoryId) {
 		search.append("categoryId", params.categoryId)
+	}
+
+	if (params?.paid) {
+		search.append("paid", params.paid)
 	}
 
 	const response = await fetch(

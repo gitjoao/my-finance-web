@@ -43,6 +43,7 @@ export default function TransactionsFilters({
     searchParams.get("categoryId") || "",
   );
 
+  const [paid, setPaid] = useState(searchParams.get("paid") || "");
   useEffect(() => {
     const params = new URLSearchParams();
 
@@ -66,10 +67,14 @@ export default function TransactionsFilters({
       params.set("categoryId", category);
     }
 
+    if (paid) {
+      params.set("paid", paid);
+    }
+
     startTransition(() => {
       router.replace(`${pathname}?${params.toString()}`);
     });
-  }, [type, month, year, paymentMethod, category, pathname, router]);
+  }, [type, month, year, paymentMethod, category, paid, pathname, router]);
 
   return (
     <div className="box box-primary">
@@ -157,6 +162,21 @@ export default function TransactionsFilters({
               value={year}
               onChange={(e) => setYear(e.target.value)}
             />
+          </div>
+          <div>
+            <label>Pago</label>
+
+            <select
+              className="form-control"
+              value={paid}
+              onChange={(e) => setPaid(e.target.value)}
+            >
+              <option value="">Todos</option>
+
+              <option value="true">Pago</option>
+
+              <option value="false">Não Pago</option>
+            </select>
           </div>
         </div>
       </div>
