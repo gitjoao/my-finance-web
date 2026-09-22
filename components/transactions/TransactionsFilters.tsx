@@ -64,7 +64,7 @@ export default function TransactionsFilters({
   }, [description]);
 
   useEffect(() => {
-    if (!isPending && debouncedDescription.length >= 2) {
+    if (!isPending && debouncedDescription.length >= 3) {
       const input = descriptionInputRef.current;
 
       if (input) {
