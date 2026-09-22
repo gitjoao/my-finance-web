@@ -64,7 +64,7 @@ export default function TransactionsFilters({
   }, [description]);
 
   useEffect(() => {
-    if (!isPending && debouncedDescription.length >= 3) {
+    if (!isPending && debouncedDescription.length >= 1) {
       const input = descriptionInputRef.current;
 
       if (input) {
@@ -229,6 +229,7 @@ export default function TransactionsFilters({
               ref={descriptionInputRef}
               type="string"
               className="form-control"
+              placeholder="Exemplo: pão"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
