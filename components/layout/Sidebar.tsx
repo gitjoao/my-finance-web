@@ -20,19 +20,19 @@ export default function Sidebar() {
             </Link>
           </li>
 
-          <li className={pathname === "/reports" ? "active" : ""}>
-            <Link href={`/reports`}>
-              <i className="fa fa-file-text"></i>
-              <span>Relatórios</span>
-            </Link>
-          </li>
-
           <li className={pathname.startsWith("/transactions") ? "active" : ""}>
             <Link
               href={`/transactions?month=${currentMonth}&year=${currentYear}`}
             >
               <i className="fa fa-money"></i>
               <span>Transações</span>
+            </Link>
+          </li>
+
+          <li className={pathname === "/reports" ? "active" : ""}>
+            <Link href={`/reports`}>
+              <i className="fa fa-file-text"></i>
+              <span>Relatórios</span>
             </Link>
           </li>
 
