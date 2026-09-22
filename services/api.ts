@@ -41,6 +41,7 @@ type GetTransactionsParams = {
 	paymentMethod?: string
 	categoryId?: string
 	paid?: string
+	description?: string
 }
 
 
@@ -71,6 +72,12 @@ export async function getTransactions(params?: GetTransactionsParams) {
 	if (params?.paid) {
 		search.append("paid", params.paid)
 	}
+
+	if (params?.description) {
+		search.append("description", params.description)
+	}
+
+	console.log(params)
 
 	const response = await fetch(
 		`${API_URL}/transactions?${search.toString()}`

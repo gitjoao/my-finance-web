@@ -13,6 +13,7 @@ type Props = {
     paymentMethod?: string;
     categoryId?: string;
     paid?: string;
+    description?: string;
   }>;
 };
 
@@ -36,6 +37,7 @@ export default async function TransactionsPage({ searchParams }: Props) {
       paymentMethod: params.paymentMethod,
       categoryId: params.categoryId,
       paid: params.paid,
+      description: params.description,
     }),
   ]);
 

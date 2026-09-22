@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState, useTransition, useRef } from "react";
 
 const months = [
   { value: "1", label: "Janeiro" },
@@ -43,7 +43,37 @@ export default function TransactionsFilters({
     searchParams.get("categoryId") || "",
   );
 
+  const [description, setDescription] = useState(
+    searchParams.get("description") || "",
+  );
+
+  const [debouncedDescription, setDebouncedDescription] = useState(
+    searchParams.get("description") || "",
+  );
+
   const [paid, setPaid] = useState(searchParams.get("paid") || "");
+
+  const descriptionInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedDescription(description);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [description]);
+
+  useEffect(() => {
+    if (!isPending && debouncedDescription.length >= 2) {
+      const input = descriptionInputRef.current;
+
+      if (input) {
+        input.focus();
+        input.setSelectionRange(input.value.length, input.value.length);
+      }
+    }
+  }, [isPending, debouncedDescription]);
+
   useEffect(() => {
     const params = new URLSearchParams();
 
@@ -71,10 +101,24 @@ export default function TransactionsFilters({
       params.set("paid", paid);
     }
 
+    if (debouncedDescription.length >= 3) {
+      params.set("description", debouncedDescription);
+    }
+
     startTransition(() => {
       router.replace(`${pathname}?${params.toString()}`);
     });
-  }, [type, month, year, paymentMethod, category, paid, pathname, router]);
+  }, [
+    type,
+    month,
+    year,
+    paymentMethod,
+    category,
+    paid,
+    debouncedDescription,
+    pathname,
+    router,
+  ]);
 
   return (
     <div className="box box-primary">
@@ -177,6 +221,17 @@ export default function TransactionsFilters({
 
               <option value="false">Não Pago</option>
             </select>
+          </div>
+          <div>
+            <label>Descrição</label>
+
+            <input
+              ref={descriptionInputRef}
+              type="string"
+              className="form-control"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
         </div>
       </div>
