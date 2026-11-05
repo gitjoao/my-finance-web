@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { updateTransaction } from "@/services/api";
-import { createTransaction } from "@/services/transactionsService";
+import {
+  createTransaction,
+  updateTransaction,
+} from "@/services/transactionsService";
 import { useRouter } from "next/navigation";
 import { currencyFormatter } from "@/app/utils/currency";
 import { toast } from "react-toastify";

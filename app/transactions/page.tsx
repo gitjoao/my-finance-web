@@ -1,9 +1,9 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import TransactionsTable from "@/components/transactions/TransactionsTable";
-import { getTransactions } from "@/services/api";
 import TransactionsFilters from "@/components/transactions/TransactionsFilters";
 import { redirect } from "next/navigation";
-import { getCategories } from "@/services/categoriesService";
+import { getCategories } from "@/services/server/categoriesService";
+import { getTransactions } from "@/services/server/transactionsService";
 
 type Props = {
   searchParams: Promise<{

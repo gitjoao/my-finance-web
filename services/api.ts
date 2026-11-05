@@ -6,141 +6,50 @@ export async function apiFetch(
 	path: string,
 	options?: RequestInit,
 ) {
-	const response = await fetch(
-		`${API_URL}${path}`,
-		{
-			...options,
-			headers: {
-				"Content-Type":
-					"application/json",
-				...options?.headers,
-			},
+	const response = await fetch(`${API_URL}${path}`, {
+		...options,
+		credentials: "include",
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
 		},
-	)
-	const text =
-		await response.text();
-
-	const data = text
-		? JSON.parse(text)
-		: null;
-
-	if (!response.ok) {
-		throw new ApiError(data?.error || "Erro na requisição", response.status, data?.details);
-	}
+	});
 
 	if (response.status === 204) {
-		return null
+		return null;
 	}
 
-	return data
-}
-type GetTransactionsParams = {
-	type?: string
-	month?: string
-	year?: string
-	paymentMethod?: string
-	categoryId?: string
-	paid?: string
-	description?: string
-}
+	// if (response.status === 401) {
+	// 	if (typeof window !== "undefined") {
+	// 		window.location.href = "/login";
+	// 	}
 
 
-export async function getTransactions(params?: GetTransactionsParams) {
 
-	const search = new URLSearchParams()
+	const text = await response.text();
 
-	if (params?.type) {
-		search.append("type", params.type)
+	let data = null;
+
+	try {
+		data = text ? JSON.parse(text) : null;
+	} catch {
+		data = { message: text };
 	}
-
-	if (params?.month) {
-		search.append("month", params.month)
-	}
-
-	if (params?.year) {
-		search.append("year", params.year)
-	}
-
-	if (params?.paymentMethod) {
-		search.append("paymentMethod", params.paymentMethod)
-	}
-
-	if (params?.categoryId) {
-		search.append("categoryId", params.categoryId)
-	}
-
-	if (params?.paid) {
-		search.append("paid", params.paid)
-	}
-
-	if (params?.description) {
-		search.append("description", params.description)
-	}
-
-	console.log(params)
-
-	const response = await fetch(
-		`${API_URL}/transactions?${search.toString()}`
-	)
 
 	if (!response.ok) {
-		throw new Error("Failed to fetch summary")
+		console.error("API Error:", {
+			path,
+			status: response.status,
+			statusText: response.statusText,
+			response: data,
+		});
+
+		throw new ApiError(
+			data?.message || data?.error || "Erro na requisição",
+			response.status,
+			data?.details
+		);
 	}
 
-	return response.json()
-}
-
-export async function getMonthlySummary(month: number, year: number) {
-	const response = await fetch(
-		`${API_URL}/dashboard/summary?month=${month}&year=${year}`
-	)
-
-	if (!response.ok) {
-		throw new Error("Failed to fetch summary")
-	}
-
-	return response.json()
-}
-
-
-export async function getTransactionById(id: string) {
-	const response = await fetch(`${API_URL}/transactions/${id}`)
-
-	if (!response.ok) {
-		throw new Error("Failed to fetch transaction")
-	}
-
-	return response.json()
-}
-
-export async function updateTransaction(id: string, data: unknown) {
-	const response = await fetch(
-		`${API_URL}/transactions/${id}`,
-		{
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(data),
-		}
-	)
-
-	if (!response.ok) {
-		throw new Error("Failed to update transaction")
-	}
-
-	return response.json()
-}
-
-export async function deleteTransaction(id: string) {
-	const response = await fetch(
-		`http://localhost:3333/transactions/${id}`,
-		{
-			method: "DELETE",
-		}
-	)
-
-	if (!response.ok) {
-		throw new Error("Failed to delete")
-	}
+	return data;
 }

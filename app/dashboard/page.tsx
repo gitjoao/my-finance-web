@@ -1,12 +1,12 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import SummaryCards from "@/components/dashboard/SummaryCards";
-import { getMonthlySummary } from "@/services/api";
 import BudgetProgress from "@/components/dashboard/BudgetProgress";
 import { getBudgetSummary } from "@/services/budgetsService";
 import DonutChart from "@/components/dashboard/DonutChart";
 import { getExpenseCategorySummaries } from "@/services/reportsService";
 import DashboardFilters from "@/components/dashboard/DashboardFilters";
 import { redirect } from "next/navigation";
+import { getMonthlySummary } from "@/services/server/dashboardService";
 
 type Props = {
   searchParams: Promise<{

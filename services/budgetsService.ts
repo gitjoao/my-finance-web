@@ -1,5 +1,5 @@
-import { apiFetch } from "./api";
+import { serverApiFetch } from "./api-service";
 
 export async function getBudgetSummary(month: number, year: number) {
-    return apiFetch(`/budgets/summary?month=${month}&year=${year}`);
+    return serverApiFetch(`/budgets/summary?month=${month}&year=${year}`);
 }

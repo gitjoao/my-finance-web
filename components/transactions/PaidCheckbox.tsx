@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { updateTransaction } from "@/services/api";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { updateTransaction } from "@/services/transactionsService";
 
 type Props = {
   id: string;

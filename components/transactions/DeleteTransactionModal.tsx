@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteTransaction } from "@/services/api";
+import { deleteTransaction } from "@/services/transactionsService";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
