@@ -28,6 +28,15 @@ export default function CategoriesTable({
               <tr>
                 <th>Nome</th>
                 <th>Limite</th>
+                <th>
+                  Valor{" "}
+                  {currencyFormatter.format(
+                    categories.reduce(
+                      (total, category) => total + (category.limit ?? 0),
+                      0,
+                    ),
+                  )}
+                </th>
                 <th></th>
               </tr>
             </thead>

@@ -113,7 +113,9 @@ export default function CategoryForm({ initialData }: TransactionFormProps) {
               name="limit"
               className="form-control"
               value={
-                form.limit ? currencyFormatter.format(form.limit) : undefined
+                form.limit !== undefined
+                  ? currencyFormatter.format(form.limit)
+                  : ""
               }
               onChange={handleLimitChange}
             />
