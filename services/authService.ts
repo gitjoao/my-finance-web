@@ -10,3 +10,9 @@ export async function login(username: string, password: string) {
         body: JSON.stringify({ username, password }),
     });
 }
+
+export function logout() {
+    return apiFetch('/auth/logout', {
+        method: "POST"
+    })
+}

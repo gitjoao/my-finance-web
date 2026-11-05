@@ -1,11 +1,27 @@
 "use client";
+
+import { logout } from "@/services/authService";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
+
+  async function handleLogout() {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Erro ao realizar logout:", error);
+    } finally {
+      router.replace("/login");
+      router.refresh();
+    }
+  }
+
   return (
     <aside className="main-sidebar">
       <section className="sidebar">
@@ -15,7 +31,6 @@ export default function Sidebar() {
           <li className={pathname === "/dashboard" ? "active" : ""}>
             <Link href={`/dashboard?month=${currentMonth}&year=${currentYear}`}>
               <i className="fa fa-dashboard"></i>
-
               <span>Dashboard</span>
             </Link>
           </li>
@@ -30,7 +45,7 @@ export default function Sidebar() {
           </li>
 
           <li className={pathname === "/reports" ? "active" : ""}>
-            <Link href={`/reports`}>
+            <Link href="/reports">
               <i className="fa fa-file-text"></i>
               <span>Relatórios</span>
             </Link>
@@ -41,6 +56,19 @@ export default function Sidebar() {
               <i className="fa fa-tag"></i>
               <span>Categorias</span>
             </Link>
+          </li>
+
+          <li>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                handleLogout();
+              }}
+            >
+              <i className="fa fa-sign-out"></i>
+              <span>Sair</span>
+            </a>
           </li>
         </ul>
       </section>
