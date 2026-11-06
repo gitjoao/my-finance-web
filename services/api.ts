@@ -1,6 +1,6 @@
 import { ApiError } from "./errors";
 
-const API_URL = "http://localhost:3333"
+const API_URL = "/api"
 
 export async function apiFetch(
 	path: string,

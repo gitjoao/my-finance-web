@@ -3,7 +3,7 @@ import "server-only"
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-const API_URL = "http://localhost:3333"
+const API_URL = "https://my-finance-un8m.onrender.com"
 
 export async function serverApiFetch(
     path: string,
