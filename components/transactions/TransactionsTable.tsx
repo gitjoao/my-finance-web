@@ -59,6 +59,7 @@ export default function TransactionsTable({
           display: "flex",
           gap: "10px",
           marginBottom: "15px",
+          flexWrap: "wrap",
         }}
       >
         {" "}
@@ -83,103 +84,181 @@ export default function TransactionsTable({
           <h3 className="box-title">Transações</h3>
         </div>
 
-        <div className="box-body table-responsive no-padding">
-          <table className="table table-bordered">
-            <thead>
-              <tr>
-                <th>Categoria</th>
-                <th>Descrição</th>
-                <th>Data</th>
-                <th>Tipo</th>
-                <th>Pagamento</th>
-                <th>
-                  Valor{" "}
-                  {currencyFormatter.format(
-                    transactions
-                      .filter((t) => t.type === "expense")
-                      .map((t) => t.amount)
-                      .reduce((a, b) => a + b, 0),
-                  )}
-                </th>
-                <th>Pago?</th>
-                <th></th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {transactions.length === 0 ? (
+        <div className="box-body no-padding">
+          <div className="table-responsive tx-table">
+            <table className="table table-bordered">
+              <thead>
                 <tr>
-                  <td colSpan={7} style={{ textAlign: "center" }}>
-                    Nenhuma transação encontrada.
-                  </td>
+                  <th>Categoria</th>
+                  <th>Descrição</th>
+                  <th>Data</th>
+                  <th>Tipo</th>
+                  <th>Pagamento</th>
+                  <th>
+                    Valor{" "}
+                    {currencyFormatter.format(
+                      transactions
+                        .filter((t) => t.type === "expense")
+                        .map((t) => t.amount)
+                        .reduce((a, b) => a + b, 0),
+                    )}
+                  </th>
+                  <th>Pago?</th>
+                  <th></th>
                 </tr>
-              ) : (
-                transactions.map((transaction) => (
-                  <tr key={transaction.id}>
-                    <td>
-                      <div
-                        style={{
-                          backgroundColor: transaction.category?.color,
-                          color: "#fff",
-                          padding: "4px 8px",
-                          borderRadius: 20,
-                          display: "inline-block",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {transaction.category?.name || ""}
-                      </div>
-                    </td>
-                    <td>
-                      {transaction.description}{" "}
-                      {transaction.installmentTotal! > 1
-                        ? `(${transaction.installmentNumber}/${transaction.installmentTotal})`
-                        : ""}
-                    </td>
-                    <td>{dateFormatter.format(new Date(transaction.date))}</td>
-                    <td>
-                      {transaction.type === "income" ? "Receita" : "Despesa"}
-                    </td>
-                    <td>
-                      {transaction.paymentMethod === "credit"
-                        ? "Crédito"
-                        : "Débito"}
-                    </td>
-                    <td>
-                      {currencyFormatter.format(
-                        Number(transaction.amount || 0),
-                      )}
-                    </td>
-                    <td style={{ textAlign: "center" }}>
-                      <PaidCheckbox
-                        id={transaction.id}
-                        paid={transaction.paid}
-                      />
-                    </td>
-                    <td>
-                      {showOptions && (
-                        <div
-                          className="btn-group"
-                          style={{ display: "flex", gap: "8px" }}
-                        >
-                          <Link
-                            href={`/transactions/${transaction.id}`}
-                            className="btn btn-warning btn-sm"
-                          >
-                            <i className="fa fa-pencil"></i> Editar
-                          </Link>
-                          <DeleteTransactionModal
-                            transactionId={transaction.id}
-                          />
-                        </div>
-                      )}
+              </thead>
+
+              <tbody>
+                {transactions.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} style={{ textAlign: "center" }}>
+                      Nenhuma transação encontrada.
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  transactions.map((transaction) => (
+                    <tr key={transaction.id}>
+                      <td>
+                        <div
+                          style={{
+                            backgroundColor: transaction.category?.color,
+                            color: "#fff",
+                            padding: "4px 8px",
+                            borderRadius: 20,
+                            display: "inline-block",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {transaction.category?.name || ""}
+                        </div>
+                      </td>
+                      <td>
+                        {transaction.description}{" "}
+                        {transaction.installmentTotal! > 1
+                          ? `(${transaction.installmentNumber}/${transaction.installmentTotal})`
+                          : ""}
+                      </td>
+                      <td>
+                        {dateFormatter.format(new Date(transaction.date))}
+                      </td>
+                      <td>
+                        {transaction.type === "income" ? "Receita" : "Despesa"}
+                      </td>
+                      <td>
+                        {transaction.paymentMethod === "credit"
+                          ? "Crédito"
+                          : "Débito"}
+                      </td>
+                      <td>
+                        {currencyFormatter.format(
+                          Number(transaction.amount || 0),
+                        )}
+                      </td>
+                      <td style={{ textAlign: "center" }}>
+                        <PaidCheckbox
+                          id={transaction.id}
+                          paid={transaction.paid}
+                        />
+                      </td>
+                      <td>
+                        {showOptions && (
+                          <div
+                            className="btn-group"
+                            style={{ display: "flex", gap: "8px" }}
+                          >
+                            <Link
+                              href={`/transactions/${transaction.id}`}
+                              className="btn btn-warning btn-sm"
+                            >
+                              <i className="fa fa-pencil"></i> Editar
+                            </Link>
+                            <DeleteTransactionModal
+                              transactionId={transaction.id}
+                            />
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+          <div className="tx-cards">
+            {transactions.length === 0 ? (
+              <p style={{ textAlign: "center" }}>
+                Nenhuma transação encontrada.
+              </p>
+            ) : (
+              transactions.map((t) => (
+                <TransactionCard
+                  key={t.id}
+                  transaction={t}
+                  showOptions={showOptions}
+                />
+              ))
+            )}
+          </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function TransactionCard({
+  transaction,
+  showOptions,
+}: {
+  transaction: Transaction;
+  showOptions: boolean;
+}) {
+  const isExpense = transaction.type === "expense";
+
+  return (
+    <div className="tx-card">
+      <div className="tx-card-top">
+        <span
+          className="tx-pill"
+          style={{ backgroundColor: transaction.category?.color }}
+        >
+          {transaction.category?.name || ""}
+        </span>
+        <strong style={{ color: isExpense ? "#dd4b39" : "#00a65a" }}>
+          {currencyFormatter.format(Number(transaction.amount || 0))}
+        </strong>
+      </div>
+
+      <div className="tx-card-desc">
+        {transaction.description}{" "}
+        {transaction.installmentTotal! > 1
+          ? `(${transaction.installmentNumber}/${transaction.installmentTotal})`
+          : ""}
+      </div>
+
+      <div className="tx-card-meta">
+        {dateFormatter.format(new Date(transaction.date))} ·{" "}
+        {isExpense ? "Despesa" : "Receita"} ·{" "}
+        {transaction.paymentMethod === "credit" ? "Crédito" : "Débito"}
+      </div>
+
+      <div className="tx-card-bottom">
+        <label
+          style={{ display: "flex", gap: 6, alignItems: "center", margin: 0 }}
+        >
+          <PaidCheckbox id={transaction.id} paid={transaction.paid} /> Pago
+        </label>
+
+        {showOptions && (
+          <div style={{ display: "flex", gap: 8 }}>
+            <Link
+              href={`/transactions/${transaction.id}`}
+              className="btn btn-warning btn-sm"
+            >
+              <i className="fa fa-pencil"></i>
+            </Link>
+            <DeleteTransactionModal transactionId={transaction.id} />
+          </div>
+        )}
       </div>
     </div>
   );

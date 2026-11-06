@@ -26,6 +26,7 @@ export default function TransactionsFilters({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [open, setOpen] = useState(false);
 
   const [isPending, startTransition] = useTransition();
 
@@ -54,6 +55,14 @@ export default function TransactionsFilters({
   const [paid, setPaid] = useState(searchParams.get("paid") || "");
 
   const descriptionInputRef = useRef<HTMLInputElement>(null);
+
+  const activeFilters = [
+    type,
+    category,
+    paymentMethod,
+    paid,
+    description,
+  ].filter(Boolean).length;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -121,16 +130,18 @@ export default function TransactionsFilters({
   ]);
 
   return (
-    <div className="box box-primary">
+    <div className="box box-primary" style={{ position: "relative" }}>
       <div className="box-body">
-        <div
-          style={{
-            display: "flex",
-            gap: "10px",
-            alignItems: "end",
-            justifyContent: "center",
-          }}
+        <button
+          type="button"
+          className="btn btn-default filters-toggle"
+          onClick={() => setOpen((o) => !o)}
         >
+          <i className="fa fa-filter"></i> Filtros
+          {activeFilters > 0 && ` (${activeFilters})`}
+        </button>
+
+        <div className={`filters-grid ${open ? "" : "collapsed"}`}>
           <div>
             <label>Tipo</label>
 
@@ -227,7 +238,7 @@ export default function TransactionsFilters({
 
             <input
               ref={descriptionInputRef}
-              type="string"
+              type="text"
               className="form-control"
               placeholder="Exemplo: pão"
               value={description}
@@ -242,7 +253,6 @@ export default function TransactionsFilters({
             position: "absolute",
             inset: 0,
             background: "rgba(255,255,255,0.7)",
-            display: "flex",
             alignItems: "center",
             justifyContent: "center",
             zIndex: 10,
