@@ -36,7 +36,7 @@ export default function TransactionForm({
 
   const [form, setForm] = useState({
     type: initialData?.type ?? "expense",
-    amount: Number(initialData?.amount) ?? "",
+    amount: initialData?.amount != null ? Number(initialData.amount) : 0,
     categoryId: initialData?.categoryId ?? "",
     paymentMethod: initialData?.paymentMethod ?? "credit",
     installmentTotal: initialData?.installmentTotal ?? 1,
@@ -111,137 +111,153 @@ export default function TransactionForm({
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="tx-form">
       <div className="box box-primary">
         <div className="box-header">
           <h3 className="box-title">{isEdit ? "Editar" : "Criar"} Transação</h3>
         </div>
 
         <div className="box-body">
-          <div className="form-group">
-            <label>Tipo</label>
-
-            <select
-              name="type"
-              className="form-control"
-              value={form.type}
-              onChange={handleChange}
-              disabled={isEdit}
-            >
-              <option value="income">Receita</option>
-
-              <option value="expense">Despesa</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label>Valor</label>
-
-            <input
-              type="text"
-              name="amount"
-              className="form-control"
-              value={form.amount ? currencyFormatter.format(form.amount) : ""}
-              onChange={handleAmountChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Categoria</label>
-
-            <select
-              className="form-control"
-              value={form.categoryId}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  categoryId: e.target.value,
-                })
-              }
-            >
-              <option value="">Selecione</option>
-
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          {form.type === "expense" && (
-            <>
-              <div className="form-group">
-                <label>Pagamento</label>
-
-                <select
-                  name="paymentMethod"
-                  className="form-control"
-                  value={form.paymentMethod}
-                  onChange={handleChange}
-                >
-                  <option value="debit">Débito</option>
-
-                  <option value="credit">Crédito</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Parcelas</label>
-
-                <input
-                  type="number"
-                  name="installmentTotal"
-                  className="form-control"
-                  min={1}
-                  value={form.installmentTotal}
-                  onChange={handleChange}
+          <div className="form-grid">
+            {/* Tipo */}
+            <div className="form-group">
+              <label>Tipo</label>
+              <div className="type-toggle">
+                <button
+                  type="button"
                   disabled={isEdit}
-                />
+                  className={`type-btn expense ${form.type === "expense" ? "active" : ""}`}
+                  onClick={() => setForm({ ...form, type: "expense" })}
+                >
+                  Despesa
+                </button>
+                <button
+                  type="button"
+                  disabled={isEdit}
+                  className={`type-btn income ${form.type === "income" ? "active" : ""}`}
+                  onClick={() => setForm({ ...form, type: "income" })}
+                >
+                  Receita
+                </button>
               </div>
-            </>
-          )}
+            </div>
 
-          <div className="form-group">
-            <label>Dono</label>
+            {/* Valor */}
+            <div className="form-group">
+              <label>Valor</label>
+              <input
+                type="text"
+                inputMode="numeric"
+                autoComplete="off"
+                name="amount"
+                className="form-control amount-input"
+                placeholder="R$ 0,00"
+                value={form.amount ? currencyFormatter.format(form.amount) : ""}
+                onChange={handleAmountChange}
+              />
+            </div>
 
-            <select
-              name="owner"
-              className="form-control"
-              value={form.owner}
-              onChange={handleChange}
-              disabled={isEdit}
-            >
-              <option value="me">Eu</option>
+            {/* Descrição */}
+            <div className="form-group full">
+              <label>Descrição</label>
+              <input
+                type="text"
+                name="description"
+                autoComplete="off"
+                className="form-control"
+                value={form.description}
+                onChange={handleChange}
+              />
+            </div>
 
-              <option value="father_in_law">Sogro</option>
-            </select>
-          </div>
+            {/* Categoria */}
+            <div className="form-group">
+              <label>Categoria</label>
+              <select
+                className="form-control"
+                value={form.categoryId}
+                onChange={(e) =>
+                  setForm({ ...form, categoryId: e.target.value })
+                }
+              >
+                <option value="">Selecione</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="form-group">
-            <label>Descrição</label>
+            {/* Data */}
+            <div className="form-group">
+              <label>Data</label>
+              <input
+                type="date"
+                name="date"
+                className="form-control"
+                value={form.date}
+                onChange={handleChange}
+              />
+            </div>
 
-            <input
-              type="text"
-              name="description"
-              className="form-control"
-              value={form.description}
-              onChange={handleChange}
-            />
-          </div>
+            {/* Pagamento e Parcelas (só despesa) */}
+            {form.type === "expense" && (
+              <>
+                <div className="form-group">
+                  <label>Pagamento</label>
+                  <select
+                    name="paymentMethod"
+                    className="form-control"
+                    value={form.paymentMethod}
+                    onChange={handleChange}
+                  >
+                    <option value="debit">Débito</option>
+                    <option value="credit">Crédito</option>
+                  </select>
+                </div>
 
-          <div className="form-group">
-            <label>Data</label>
+                <div className="form-group">
+                  <label>Parcelas</label>
+                  <input
+                    type="number"
+                    name="installmentTotal"
+                    className="form-control"
+                    min={1}
+                    value={form.installmentTotal}
+                    onChange={handleChange}
+                    disabled={isEdit}
+                  />
+                </div>
+              </>
+            )}
 
-            <input
-              type="date"
-              name="date"
-              className="form-control"
-              value={form.date}
-              onChange={handleChange}
-            />
+            {/* Dono */}
+            <div className="form-group">
+              <label>Dono</label>
+              <select
+                name="owner"
+                className="form-control"
+                value={form.owner}
+                onChange={handleChange}
+                disabled={isEdit}
+              >
+                <option value="me">Eu</option>
+                <option value="father_in_law">Sogro</option>
+              </select>
+            </div>
           </div>
         </div>
 
         <div className="box-footer">
+          <button
+            type="button"
+            className="btn btn-default"
+            onClick={() => router.back()}
+            disabled={loading}
+          >
+            Cancelar
+          </button>
           <button type="submit" className="btn btn-primary" disabled={loading}>
             {loading ? "Salvando..." : isEdit ? "Atualizar" : "Salvar"}
           </button>

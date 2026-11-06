@@ -76,3 +76,75 @@ body {
   /* evita o zoom automático do iOS ao focar em inputs */
   .form-control { font-size: 16px; }
 }
+
+/* ---------- Formulário de transação ---------- */
+.tx-form { width: 100%; }
+
+/* .tx-form .box-header { padding: 18px 20px 4px; } */
+/* .tx-form .box-title { font-size: 20px; font-weight: 600; } */
+
+.tx-form .box-body { padding: 20px; }
+.tx-form .box-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 15px 20px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 20px;
+}
+.form-grid .span-2 { grid-column: span 2; }
+
+.tx-form .form-group { margin-bottom: 18px; }
+.tx-form label { font-weight: 600; margin-bottom: 6px; }
+
+/* alturas iguais na mesma linha */
+.tx-form .form-control { height: 38px; }
+.tx-form .form-control.amount-input {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Tipo: botões lado a lado */
+.type-toggle { display: flex; gap: 8px; }
+.type-btn {
+  flex: 1;
+  height: 38px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  color: #555;
+  font-weight: 600;
+  cursor: pointer;
+}
+.type-btn.active.expense { background: #dd4b39; border-color: #dd4b39; color: #fff; }
+.type-btn.active.income  { background: #00a65a; border-color: #00a65a; color: #fff; }
+.type-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* telas médias: 2 colunas */
+@media (max-width: 1199px) {
+  .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* celular: 1 coluna */
+@media (max-width: 767px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .form-grid .span-2 { grid-column: auto; } /* senão cria uma 2ª coluna implícita */
+
+  .tx-form .box-body { padding: 15px; padding-bottom: 80px; }
+  .tx-form .form-control { height: 44px; }
+  .type-btn { height: 44px; }
+
+  .tx-form .box-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    background: #fff;
+    border-top: 1px solid #eee;
+    padding: 10px 15px calc(10px + env(safe-area-inset-bottom));
+  }
+  .tx-form .box-footer .btn { flex: 1; min-height: 44px; }
+}
