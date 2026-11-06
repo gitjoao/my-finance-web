@@ -26,7 +26,7 @@ export async function serverApiFetch(
         return null;
     }
 
-    if (response.status === 401 && path !== "/login") {
+    if (response.status === 401 && path !== "auth/login") {
         redirect("/login");
     }
 
