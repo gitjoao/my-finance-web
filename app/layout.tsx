@@ -9,6 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-br">
+      <title>My Finance</title>
       <head>
         <link
           rel="stylesheet"
