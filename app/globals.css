@@ -152,7 +152,7 @@ body {
 /* ---------- Multi-select de categorias ---------- */
 .ms-wrap { position: relative; }
 
-.ms-button {
+.form-control.ms-button {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -162,6 +162,9 @@ body {
   background: #fff;
   cursor: pointer;
 }
+
+.ms-button .fa { flex-shrink: 0; margin-left: auto; }
+
 .ms-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .ms-panel {
