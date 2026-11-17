@@ -33,7 +33,8 @@ export default function BudgetProgress({ budgets }: BudgetProgressProps) {
 
         <div className="box-body">
           {budgets.map((budget) => {
-            const percentage = (budget.used / budget.limit) * 100;
+            const percentage =
+              budget.limit > 0 ? (budget.used / budget.limit) * 100 : 0;
 
             return (
               <div
@@ -46,6 +47,8 @@ export default function BudgetProgress({ budgets }: BudgetProgressProps) {
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
+                    flexWrap: "wrap",
+                    gap: "4px 12px",
                     marginBottom: 5,
                   }}
                 >

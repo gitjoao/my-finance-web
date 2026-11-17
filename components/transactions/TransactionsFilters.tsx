@@ -36,6 +36,7 @@ export default function TransactionsFilters({
   const [month, setMonth] = useState(searchParams.get("month") || "");
 
   const [year, setYear] = useState(searchParams.get("year") || "");
+  const [yearInput, setYearInput] = useState(year);
 
   const [paymentMethod, setPaymentMethod] = useState(
     searchParams.get("paymentMethod") || "",
@@ -200,16 +201,18 @@ export default function TransactionsFilters({
             </select>
           </div>
 
-          <div>
-            <label>Ano</label>
-
-            <input
-              type="number"
-              className="form-control"
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
-            />
-          </div>
+          <input
+            type="number"
+            className="form-control"
+            value={yearInput}
+            onChange={(e) => {
+              const value = e.target.value;
+              setYearInput(value);
+              if (/^\d{4}$/.test(value)) {
+                setYear(value);
+              }
+            }}
+          />
           <div>
             <label>Pago</label>
 
@@ -245,6 +248,7 @@ export default function TransactionsFilters({
             position: "absolute",
             inset: 0,
             background: "rgba(255,255,255,0.7)",
+            display: "flex",
             alignItems: "center",
             justifyContent: "center",
             zIndex: 10,

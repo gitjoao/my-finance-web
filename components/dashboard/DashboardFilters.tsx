@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 const months = [
   { value: "1", label: "Janeiro" },
@@ -25,6 +26,13 @@ export default function DashboardFilters() {
   const month = searchParams.get("month") || "";
   const year = searchParams.get("year") || "";
 
+  const [yearInput, setYearInput] = useState(year);
+  const [prevYear, setPrevYear] = useState(year);
+
+  if (year !== prevYear) {
+    setPrevYear(year);
+    setYearInput(year);
+  }
   function updateFilters(key: string, value: string) {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -40,14 +48,7 @@ export default function DashboardFilters() {
   return (
     <div className="box box-primary">
       <div className="box-body">
-        <div
-          style={{
-            display: "flex",
-            gap: "10px",
-            alignItems: "end",
-            justifyContent: "center",
-          }}
-        >
+        <div className="dash-filters">
           <div>
             <label>Mês</label>
 
@@ -70,8 +71,13 @@ export default function DashboardFilters() {
             <input
               type="number"
               className="form-control"
-              value={year}
-              onChange={(e) => updateFilters("year", e.target.value)}
+              value={yearInput}
+              onChange={(e) => {
+                setYearInput(e.target.value);
+                if (/^\d{4}$/.test(e.target.value)) {
+                  updateFilters("year", e.target.value);
+                }
+              }}
             />
           </div>
         </div>
