@@ -310,3 +310,33 @@ body {
   .report-table { font-size: 13px; }
   .report-table th, .report-table td { padding: 6px 8px; }
 }
+
+/* ---------- Login ---------- */
+.password-field { position: relative; }
+.password-field .form-control { padding-right: 44px; }
+
+.password-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 44px;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: #777;
+  cursor: pointer;
+}
+.password-toggle:hover,
+.password-toggle:focus { color: #333; outline: none; }
+
+.login-slow {
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: #777;
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  .login-box-body .form-control { height: 44px; }
+  .login-box-body .btn-block { min-height: 44px; }
+}
