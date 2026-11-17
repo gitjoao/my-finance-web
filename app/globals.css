@@ -148,3 +148,56 @@ body {
   }
   .tx-form .box-footer .btn { flex: 1; min-height: 44px; }
 }
+
+/* ---------- Multi-select de categorias ---------- */
+.ms-wrap { position: relative; }
+
+.ms-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  cursor: pointer;
+}
+.ms-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.ms-panel {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  z-index: 30;
+  min-width: 100%;
+  width: max-content;
+  max-width: 320px;
+  background: #fff;
+  border: 1px solid #d2d6de;
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  padding: 8px;
+}
+.ms-search { margin-bottom: 6px; }
+
+.ms-list { max-height: 240px; overflow-y: auto; }
+.ms-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 8px 6px;
+  font-weight: normal;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.ms-item:hover { background: #f4f4f4; }
+.ms-item input { margin: 0; }
+
+.ms-empty { padding: 8px 6px; color: #999; }
+.ms-clear { display: block; margin-top: 4px; padding: 4px 6px; }
+
+@media (max-width: 767px) {
+  .ms-panel { max-width: none; width: 100%; }
+  .ms-item { padding: 12px 8px; }
+}

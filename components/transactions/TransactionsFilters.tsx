@@ -2,6 +2,7 @@
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition, useRef } from "react";
+import CategoryMultiSelect from "./CategoryMultiSelect";
 
 const months = [
   { value: "1", label: "Janeiro" },
@@ -159,24 +160,12 @@ export default function TransactionsFilters({
           </div>
 
           <div>
-            <label>Categoria (Ctrl/Cmd + clique)</label>
-
-            <select
-              className="form-control"
-              multiple
+            <label>Categoria</label>
+            <CategoryMultiSelect
+              options={categories}
               value={selectedCategories}
-              onChange={(e) =>
-                setSelectedCategories(
-                  Array.from(e.target.selectedOptions, (option) => option.value),
-                )
-              }
-            >
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
+              onChange={setSelectedCategories}
+            />
           </div>
 
           <div>
