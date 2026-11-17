@@ -1,21 +1,63 @@
+import Link from "next/link";
 import { currencyFormatter } from "@/app/utils/currency";
 import { ReportData } from "@/app/reports/page";
 import { formatMonth } from "@/app/utils/date";
 
-export default function CategoryComparationTable({
+function Variation({
+  current,
+  previous,
+}: {
+  current: number;
+  previous: number | null;
+}) {
+  if (previous === null) return null;
+
+  if (previous === 0) {
+    return current > 0 ? <span className="var var-new">novo</span> : null;
+  }
+
+  const pct = ((current - previous) / previous) * 100;
+  const rounded = Math.round(Math.abs(pct));
+  const cls = rounded === 0 ? "var-flat" : pct > 0 ? "var-up" : "var-down";
+  const arrow = rounded === 0 ? "=" : pct > 0 ? "↑" : "↓";
+
+  return (
+    <span className={`var ${cls}`}>
+      {arrow} {rounded}%
+    </span>
+  );
+}
+
+function monthLink(categoryId: string, month: string) {
+  const [year, m] = month.split("-");
+  return `/transactions?categoryId=${categoryId}&month=${Number(m)}&year=${year}`;
+}
+
+export default function CategoryComparisonTable({
   data,
 }: {
   data: ReportData[];
 }) {
+  if (data.length === 0) {
+    return (
+      <div className="box box-primary">
+        <div className="box-body" style={{ textAlign: "center", padding: 40 }}>
+          Nenhum dado neste período.
+        </div>
+      </div>
+    );
+  }
+
   const months = Array.from(
     new Set(data.flatMap((item) => Object.keys(item.months))),
   ).sort();
 
-  function getVariation(current: number, previous: number) {
-    if (previous === 0) return null;
+  const rows = [...data].sort((a, b) => b.total - a.total);
 
-    return ((current - previous) / previous) * 100;
-  }
+  const monthTotals = months.map((m) =>
+    data.reduce((acc, item) => acc + (item.months[m] ?? 0), 0),
+  );
+  const grandTotal = data.reduce((acc, item) => acc + item.total, 0);
 
   return (
     <div className="box box-primary">
@@ -23,71 +65,75 @@ export default function CategoryComparationTable({
         <h3 className="box-title">Comparativo por Categoria</h3>
       </div>
 
-      <div className="box-body table-responsive no-padding">
-        <table className="table table-bordered">
+      <div className="box-body no-padding report-scroll">
+        <table className="table table-bordered report-table">
           <thead>
             <tr>
-              <th>Categoria</th>
-
+              <th className="sticky-col">Categoria</th>
               {months.map((month) => (
                 <th key={month}>{formatMonth(month)}</th>
               ))}
-
               <th>Total</th>
             </tr>
           </thead>
 
           <tbody>
-            {data.map((item) => (
+            {rows.map((item) => (
               <tr key={item.category}>
-                <td
-                  style={{
-                    backgroundColor: item.color,
-                    color: "#fff",
-                    padding: "4px 8px",
-                    borderRadius: 20,
-                    display: "inline-block",
-                    fontWeight: "bold",
-                  }}
-                >
-                  <strong>{item.category}</strong>
+                <td className="sticky-col">
+                  <span
+                    className="cat-pill"
+                    style={{ backgroundColor: item.color }}
+                  >
+                    {item.category}
+                  </span>
                 </td>
 
                 {months.map((month, index) => {
                   const current = item.months[month] ?? 0;
-
                   const previous =
-                    index > 0 ? (item.months[months[index - 1]] ?? 0) : 0;
-
-                  const variation = getVariation(current, previous);
+                    index > 0 ? (item.months[months[index - 1]] ?? 0) : null;
+                  const amount = currencyFormatter.format(current);
 
                   return (
                     <td key={month}>
-                      <div>{currencyFormatter.format(current)}</div>
-
-                      {variation !== null && (
-                        <strong
-                          style={{
-                            color:
-                              variation > 0
-                                ? "#dd4b39"
-                                : variation < 0
-                                  ? "#00a65a"
-                                  : "#666",
-                          }}
+                      {item.categoryId && current > 0 ? (
+                        <Link
+                          href={monthLink(item.categoryId, month)}
+                          className="amount-link"
                         >
-                          {variation > 0 ? "↑" : variation < 0 ? "↓" : "="}{" "}
-                          {Math.abs(variation).toFixed(0)}%
-                        </strong>
+                          {amount}
+                        </Link>
+                      ) : (
+                        <span>{amount}</span>
                       )}
+                      <Variation current={current} previous={previous} />
                     </td>
                   );
                 })}
 
-                <td>{currencyFormatter.format(item.total)}</td>
+                <td>
+                  <strong>{currencyFormatter.format(item.total)}</strong>
+                </td>
               </tr>
             ))}
           </tbody>
+
+          <tfoot>
+            <tr>
+              <td className="sticky-col">Total</td>
+              {monthTotals.map((total, index) => (
+                <td key={months[index]}>
+                  {currencyFormatter.format(total)}
+                  <Variation
+                    current={total}
+                    previous={index > 0 ? monthTotals[index - 1] : null}
+                  />
+                </td>
+              ))}
+              <td>{currencyFormatter.format(grandTotal)}</td>
+            </tr>
+          </tfoot>
         </table>
       </div>
     </div>

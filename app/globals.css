@@ -233,3 +233,80 @@ body {
 @media (max-width: 767px) {
   .chart-wrap { height: 340px; }
 }
+
+/* ---------- Relatórios: filtros ---------- */
+.report-filters-top {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.report-presets { display: inline-flex; }
+.report-presets .btn { border-radius: 0; margin-left: -1px; }
+.report-presets .btn:first-child { border-radius: 3px 0 0 3px; margin-left: 0; }
+.report-presets .btn:last-child { border-radius: 0 3px 3px 0; }
+
+/* ativo: mais específico que .btn-default do tema */
+.report-presets .btn.btn-default.preset-active {
+  position: relative;
+  z-index: 1;
+  background: #3c8dbc;
+  border-color: #367fa9;
+  color: #fff;
+  font-weight: 600;
+}
+
+.report-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  align-items: flex-end;
+}
+.report-filters .range { flex: 0 1 300px; }
+.report-filters .pair { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; }
+.report-filters label { font-weight: 600; margin-bottom: 4px; }
+
+.report-error { margin-top: 10px; color: #dd4b39; font-size: 13px; text-align: center; }
+
+/* ---------- Relatórios: tabela ---------- */
+.report-scroll { overflow-x: auto; }
+.report-table th, .report-table td { white-space: nowrap; vertical-align: middle; }
+
+.report-table .sticky-col {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: #fff;
+}
+.report-table thead .sticky-col { z-index: 2; }
+.report-table tfoot td { font-weight: 700; background: #f7f7f7; }
+.report-table tfoot .sticky-col { background: #f7f7f7; }
+
+.cat-pill {
+  display: inline-block;
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 13px;
+}
+.amount-link { color: inherit; text-decoration: underline dotted; }
+
+.var { display: block; font-size: 12px; font-weight: 700; }
+.var-up { color: #dd4b39; }
+.var-down { color: #00a65a; }
+.var-flat { color: #666; }
+.var-new { color: #f39c12; }
+
+@media (max-width: 767px) {
+  .report-presets { display: flex; width: 100%; }
+  .report-presets .btn { flex: 1; min-height: 40px; }
+
+  .report-filters .range { flex-basis: 100%; }
+  .report-filters .form-control { height: 44px; }
+  .report-filters .btn-primary { width: 100%; min-height: 44px; }
+
+  .report-table { font-size: 13px; }
+  .report-table th, .report-table td { padding: 6px 8px; }
+}
