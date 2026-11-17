@@ -40,8 +40,8 @@ export default function TransactionsFilters({
     searchParams.get("paymentMethod") || "",
   );
 
-  const [category, setCategory] = useState(
-    searchParams.get("categoryId") || "",
+  const [selectedCategories, setSelectedCategories] = useState(
+    searchParams.getAll("categoryId"),
   );
 
   const [description, setDescription] = useState(
@@ -58,7 +58,7 @@ export default function TransactionsFilters({
 
   const activeFilters = [
     type,
-    category,
+    selectedCategories.length > 0,
     paymentMethod,
     paid,
     description,
@@ -102,8 +102,8 @@ export default function TransactionsFilters({
       params.set("paymentMethod", paymentMethod);
     }
 
-    if (category) {
-      params.set("categoryId", category);
+    for (const categoryId of selectedCategories) {
+      params.append("categoryId", categoryId);
     }
 
     if (paid) {
@@ -122,7 +122,7 @@ export default function TransactionsFilters({
     month,
     year,
     paymentMethod,
-    category,
+    selectedCategories,
     paid,
     debouncedDescription,
     pathname,
@@ -159,15 +159,18 @@ export default function TransactionsFilters({
           </div>
 
           <div>
-            <label>Categoria</label>
+            <label>Categoria (Ctrl/Cmd + clique)</label>
 
             <select
               className="form-control"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              multiple
+              value={selectedCategories}
+              onChange={(e) =>
+                setSelectedCategories(
+                  Array.from(e.target.selectedOptions, (option) => option.value),
+                )
+              }
             >
-              <option value="">Todas</option>
-
               {categories.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}

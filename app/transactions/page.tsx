@@ -11,7 +11,7 @@ type Props = {
     month?: string;
     year?: string;
     paymentMethod?: string;
-    categoryId?: string;
+    categoryId?: string | string[];
     paid?: string;
     description?: string;
   }>;

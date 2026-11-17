@@ -24,7 +24,11 @@ export async function getTransactions(params?: GetTransactionsParams) {
     }
 
     if (params?.categoryId) {
-        search.append("categoryId", params.categoryId);
+        for (const categoryId of Array.isArray(params.categoryId)
+            ? params.categoryId
+            : [params.categoryId]) {
+            search.append("categoryId", categoryId);
+        }
     }
 
     if (params?.paid !== undefined) {
